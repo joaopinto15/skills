@@ -1,0 +1,15 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "skills",
+  "description": "Joao Pinto's personal agent skill library.",
+  "owner": {
+    "name": "Joao Pinto",
+    "url": "https://github.com/joaopinto15"
+  },
+  "plugins": [
+    { "name": "coding",       "description": "Design, build, review, debug: TDD, code review, domain modeling, bug diagnosis.", "source": "./coding",       "category": "productivity" },
+    { "name": "general",      "description": "Thinking and handover: grilling a plan, research, handoffs, unslop.",              "source": "./general",      "category": "productivity" },
+    { "name": "productivity", "description": "Conversations into plans, tickets, docs, and repeatable setup.",                   "source": "./productivity", "category": "productivity" },
+    { "name": "personal",     "description": "Machine-specific one-offs.",                                                       "source": "./personal",     "category": "productivity" }
+  ]
+}
