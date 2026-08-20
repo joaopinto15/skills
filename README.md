@@ -2,24 +2,26 @@
 
 My personal library of agent skills. Reusable instruction packs that Claude Code and other agents load on demand, so I stop re-explaining the same workflow every session.
 
-A skill is a directory under `<category>/skills/` holding a `SKILL.md`. That file has YAML frontmatter (`name`, `description`, and whether the model may invoke it on its own) followed by the instructions the agent follows.
+A skill is a directory under `<category>/skills/` holding a `SKILL.md`. The YAML frontmatter sets `name`, `description`, and optionally `disable-model-invocation`. The rest of the file is the instructions the agent follows.
 
 ## Catalog
 
 | Category | What's in it |
 |---|---|
-| [coding](./coding/README.md) | Design, build, review, debug. TDD, code review, domain modeling, bug diagnosis. |
-| [general](./general/README.md) | Thinking and handover. Grilling a plan, research, handoffs, unslop. |
-| [productivity](./productivity/README.md) | Conversations into plans, tickets, docs, repeatable setup. |
+| [coding](./coding/README.md) | Design, build, review, debug: TDD, code review, domain modeling, bug diagnosis. |
+| [general](./general/README.md) | Thinking and handoff: grill a plan, research, unslop. |
+| [productivity](./productivity/README.md) | Conversations into plans, tickets, docs, and repeatable setup. |
 | [personal](./personal/README.md) | Machine-specific one-offs. |
 
-Category READMEs list the skills and mark which ones you type yourself and which the agent reaches for on its own.
+Each category README lists its skills. It marks which ones you invoke by typing `/<name>` and which ones the agent invokes on its own.
 
 ## Setup
 
-Pick one. Both keep the skills pointing at this repo, so `git pull` updates them.
+Both methods point at this repo, so `git pull` or `/plugin update` brings in new skills. Pick one.
 
-### As a plugin (easiest, any machine)
+### Install as a plugin
+
+This needs no clone and works on any machine.
 
 ```
 /plugin marketplace add joaopinto15/skills
@@ -28,29 +30,35 @@ Pick one. Both keep the skills pointing at this repo, so `git pull` updates them
 /plugin install productivity@skills
 ```
 
-One plugin per category, so install only what you want. `/plugin update` pulls new skills.
-Working on the repo locally? Point the marketplace at the folder instead: `/plugin marketplace add ~/projetos/skills`.
+The marketplace holds one plugin per category, so install only the ones you want. `personal@skills` is there too, but it only helps on my own machines.
 
-### As linked skills (local clone)
+To test a change before you push it, point the marketplace at your clone instead: `/plugin marketplace add ~/projetos/skills`.
+
+### Link a local clone
+
+On Windows:
 
 ```powershell
 git clone https://github.com/joaopinto15/skills.git $HOME\projetos\skills
 $HOME\projetos\skills\setup.ps1
 ```
 
+On macOS and Linux:
+
 ```bash
 git clone https://github.com/joaopinto15/skills.git ~/projetos/skills
 ~/projetos/skills/setup.sh
 ```
 
-`setup.ps1` / `setup.sh` junction (Windows) or symlink (macOS/Linux) every skill into `~/.claude/skills`. Re-run after adding a skill. Restart the Claude Code session to pick up changes.
+`setup.ps1` creates a junction in `~/.claude/skills` for every skill in the repo, and skips the skills it already linked. `setup.sh` creates a symlink instead, and replaces any link that is already there. Run the script again after you add a skill, then restart Claude Code.
 
-Project-scoped instead of global: edit `$dst` / `dst` in the script to `<repo>/.claude/skills`.
+To link into a project instead of your home directory, set `$dst` in `setup.ps1` or `dst` in `setup.sh` to `<repo>/.claude/skills`.
 
-## Adding a skill
+## Add a skill
 
-1. `mkdir <category>/skills/<skill-name>` and write `SKILL.md` with frontmatter (`name`, `description`; add `disable-model-invocation: true` for type-only skills).
-2. Add a line to that category's README.
-3. Re-run `setup.ps1`, or bump the category's `version` in `<category>/.claude-plugin/plugin.json` and push for plugin users.
+1. Create the directory: `mkdir <category>/skills/<skill-name>`.
+2. Write `SKILL.md` with `name` and `description` in the frontmatter. To stop the agent from invoking the skill on its own, add `disable-model-invocation: true`.
+3. Add a line for the new skill to that category's README.
+4. If you use linked skills, run `setup.ps1` again. If you use the plugin, raise `version` in `<category>/.claude-plugin/plugin.json` and push.
 
-Skill names must be unique across categories, because linked skills all land flat in `~/.claude/skills`.
+Both setup scripts link every skill directly into `~/.claude/skills`, so skill names must be unique across categories.
