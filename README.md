@@ -36,29 +36,20 @@ To test a change before you push it, point the marketplace at your clone instead
 
 ### Link a local clone
 
-On Windows:
-
-```powershell
-git clone https://github.com/joaopinto15/skills.git $HOME\projetos\skills
-$HOME\projetos\skills\setup.ps1
-```
-
-On macOS and Linux:
-
 ```bash
 git clone https://github.com/joaopinto15/skills.git ~/projetos/skills
 ~/projetos/skills/setup.sh
 ```
 
-`setup.ps1` creates a junction in `~/.claude/skills` for every skill in the repo, and skips the skills it already linked. `setup.sh` creates a symlink instead, and replaces any link that is already there. Run the script again after you add a skill, then restart Claude Code.
+`setup.sh` creates a symlink in `~/.claude/skills` for every skill in the repo, and replaces any link that is already there. Run it again after you add a skill, then restart Claude Code.
 
-To link into a project instead of your home directory, set `$dst` in `setup.ps1` or `dst` in `setup.sh` to `<repo>/.claude/skills`.
+To link into a project instead of your home directory, set `dst` in `setup.sh` to `<repo>/.claude/skills`.
 
 ## Add a skill
 
 1. Create the directory: `mkdir <category>/skills/<skill-name>`.
 2. Write `SKILL.md` with `name` and `description` in the frontmatter. To stop the agent from invoking the skill on its own, add `disable-model-invocation: true`.
 3. Add a line for the new skill to that category's README.
-4. If you use linked skills, run `setup.ps1` again. If you use the plugin, raise `version` in `<category>/.claude-plugin/plugin.json` and push.
+4. If you use linked skills, run `setup.sh` again. If you use the plugin, raise `version` in `<category>/.claude-plugin/plugin.json` and push.
 
-Both setup scripts link every skill directly into `~/.claude/skills`, so skill names must be unique across categories.
+`setup.sh` links every skill directly into `~/.claude/skills`, so skill names must be unique across categories.
