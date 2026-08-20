@@ -1,19 +1,19 @@
 # skills
 
-My personal library of agent skills — reusable instruction packs that Claude Code (and other agents) load on demand instead of me re-explaining a workflow every session.
+My personal library of agent skills. Reusable instruction packs that Claude Code and other agents load on demand, so I stop re-explaining the same workflow every session.
 
-Each skill is a directory under `<category>/skills/` with a `SKILL.md`: YAML frontmatter (`name`, `description`, and whether the model may invoke it on its own) plus the instructions the agent follows.
+A skill is a directory under `<category>/skills/` holding a `SKILL.md`. That file has YAML frontmatter (`name`, `description`, and whether the model may invoke it on its own) followed by the instructions the agent follows.
 
 ## Catalog
 
 | Category | What's in it |
 |---|---|
-| [coding](./coding/README.md) | Design, build, review, debug — TDD, code review, domain modeling, bug diagnosis. |
-| [general](./general/README.md) | Thinking and handover — grilling a plan, research, handoffs, unslop. |
+| [coding](./coding/README.md) | Design, build, review, debug. TDD, code review, domain modeling, bug diagnosis. |
+| [general](./general/README.md) | Thinking and handover. Grilling a plan, research, handoffs, unslop. |
 | [productivity](./productivity/README.md) | Conversations into plans, tickets, docs, repeatable setup. |
 | [personal](./personal/README.md) | Machine-specific one-offs. |
 
-Each category README lists its skills and marks which are user-invoked (you type them) vs model-invoked (the agent reaches for them itself).
+Category READMEs list the skills and mark which ones you type yourself and which the agent reaches for on its own.
 
 ## Setup
 
@@ -28,7 +28,7 @@ Pick one. Both keep the skills pointing at this repo, so `git pull` updates them
 /plugin install productivity@skills
 ```
 
-One plugin per category — install only what you want. `/plugin update` pulls new skills.
+One plugin per category, so install only what you want. `/plugin update` pulls new skills.
 Working on the repo locally? Point the marketplace at the folder instead: `/plugin marketplace add ~/projetos/skills`.
 
 ### As linked skills (local clone)
@@ -53,4 +53,4 @@ Project-scoped instead of global: edit `$dst` / `dst` in the script to `<repo>/.
 2. Add a line to that category's README.
 3. Re-run `setup.ps1`, or bump the category's `version` in `<category>/.claude-plugin/plugin.json` and push for plugin users.
 
-Skill names must be unique across categories — linked skills all land flat in `~/.claude/skills`.
+Skill names must be unique across categories, because linked skills all land flat in `~/.claude/skills`.
