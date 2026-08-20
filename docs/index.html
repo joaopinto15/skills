@@ -1,0 +1,458 @@
+<title>Pinto Skill Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Every skill in joaopinto15/skills, generated from the SKILL.md files.">
+
+<style>
+	:root {
+		--bg: #E7EBEC;
+		--surface: #F8FAFA;
+		--surface-2: #DCE3E4;
+		--ink: #101A1D;
+		--ink-2: #4A5B5F;
+		--ink-3: #6E8085;
+		--rule: #C2CCCD;
+		--accent: #0F525E;
+		--stamp: #99401F;
+		--warn: #7E5A0E;
+		--on-stamp: #FBF6F3;
+
+		--display: "Familjen Grotesk", "Helvetica Neue", Arial, sans-serif;
+		--body: "Source Serif 4", Georgia, "Times New Roman", serif;
+		--mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		:root:not([data-theme="light"]) {
+			--bg: #0D1416;
+			--surface: #162023;
+			--surface-2: #1F2C30;
+			--ink: #E9EEEF;
+			--ink-2: #A3B4B8;
+			--ink-3: #7B8D92;
+			--rule: #2B3A3E;
+			--accent: #6BC3CD;
+			--stamp: #E4906A;
+			--warn: #D9AA44;
+			--on-stamp: #1A0F09;
+		}
+	}
+
+	:root[data-theme="dark"] {
+		--bg: #0D1416;
+		--surface: #162023;
+		--surface-2: #1F2C30;
+		--ink: #E9EEEF;
+		--ink-2: #A3B4B8;
+		--ink-3: #7B8D92;
+		--rule: #2B3A3E;
+		--accent: #6BC3CD;
+		--stamp: #E4906A;
+		--warn: #D9AA44;
+		--on-stamp: #1A0F09;
+	}
+
+	* { box-sizing: border-box; }
+
+	body {
+		margin: 0;
+		background: var(--bg);
+		color: var(--ink);
+		font-family: var(--body);
+		font-size: 16px;
+		line-height: 1.55;
+		-webkit-font-smoothing: antialiased;
+	}
+
+	.wrap {
+		max-width: 1180px;
+		margin: 0 auto;
+		padding: clamp(24px, 5vw, 64px) clamp(16px, 4vw, 40px) 72px;
+		display: flex;
+		flex-direction: column;
+		gap: clamp(32px, 5vw, 56px);
+	}
+
+	.masthead { display: flex; flex-direction: column; gap: 18px; }
+
+	.eyebrow {
+		font-family: var(--mono);
+		font-size: 12px;
+		letter-spacing: 0.09em;
+		text-transform: uppercase;
+		color: var(--ink-3);
+		margin: 0;
+	}
+
+	h1 {
+		font-family: var(--display);
+		font-weight: 700;
+		font-size: clamp(38px, 7vw, 66px);
+		line-height: 1.02;
+		letter-spacing: -0.02em;
+		text-wrap: balance;
+		margin: 0;
+	}
+
+	.lede { max-width: 62ch; font-size: 17px; color: var(--ink-2); margin: 0; }
+	.lede code, .note code, .cardtext code { font-family: var(--mono); font-size: 0.86em; color: var(--ink); }
+
+	.stats {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+		gap: 1px;
+		background: var(--rule);
+		border: 1px solid var(--rule);
+		margin-top: 6px;
+	}
+	.stat { background: var(--surface); padding: 14px 16px; display: flex; flex-direction: column; gap: 2px; }
+	.stat b { font-family: var(--display); font-size: 30px; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+	.stat span { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+
+	.legend { display: flex; flex-wrap: wrap; gap: 10px 20px; align-items: center; }
+	.legend p { margin: 0; font-size: 14px; color: var(--ink-2); }
+
+	.pill {
+		font-family: var(--mono);
+		font-size: 10.5px;
+		font-weight: 500;
+		letter-spacing: 0.07em;
+		text-transform: uppercase;
+		padding: 3px 8px;
+		white-space: nowrap;
+		border: 1px solid transparent;
+	}
+	.pill.typed { background: var(--stamp); color: var(--on-stamp); }
+	.pill.auto { border-color: var(--accent); color: var(--accent); }
+	.pill.stub { border-color: var(--warn); color: var(--warn); }
+
+	figure { margin: 0; display: flex; flex-direction: column; gap: 12px; }
+	.figbox { overflow-x: auto; background: var(--surface); border: 1px solid var(--rule); padding: 20px; }
+	.figbox svg { display: block; min-width: 720px; max-width: 100%; height: auto; color: var(--ink-2); }
+	figcaption { font-size: 14.5px; color: var(--ink-2); max-width: 74ch; }
+
+	.dgm-box { fill: var(--surface-2); stroke: var(--rule); }
+	.dgm-name { font-family: var(--mono); font-size: 12.5px; font-weight: 500; fill: var(--ink); }
+	.dgm-sub { font-family: var(--body); font-size: 11.5px; fill: var(--ink-2); }
+	.dgm-edge { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.04em; fill: var(--ink-3); }
+	.dgm-line { fill: none; stroke: currentColor; stroke-width: 1.25; }
+
+	.cat { display: flex; flex-direction: column; gap: 16px; }
+	.cathead {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 8px 16px;
+		padding-bottom: 10px;
+		border-bottom: 2px solid var(--ink);
+	}
+	.cathead h2 { font-family: var(--display); font-size: 26px; font-weight: 600; letter-spacing: -0.01em; margin: 0; }
+	.cathead .count { font-family: var(--mono); font-size: 12px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+	.cathead .install { font-family: var(--mono); font-size: 12px; color: var(--ink-2); margin-left: auto; }
+
+	.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(268px, 1fr)); gap: 14px; }
+
+	.card {
+		background: var(--surface);
+		border: 1px solid var(--rule);
+		padding: 14px 16px 12px;
+		display: flex;
+		flex-direction: column;
+		gap: 9px;
+	}
+	.cardtop { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+	.cardname { font-family: var(--mono); font-size: 14px; font-weight: 700; letter-spacing: -0.01em; word-break: break-word; }
+	.cardtext { margin: 0; font-size: 14.5px; color: var(--ink-2); }
+	.cardpath {
+		font-family: var(--mono);
+		font-size: 10.5px;
+		color: var(--ink-3);
+		padding-top: 9px;
+		border-top: 1px solid var(--rule);
+		margin-top: auto;
+		word-break: break-all;
+	}
+
+	.note {
+		background: var(--surface);
+		border: 1px solid var(--rule);
+		border-left: 3px solid var(--warn);
+		padding: 14px 16px;
+		font-size: 14.5px;
+		color: var(--ink-2);
+		margin: 0;
+	}
+	.note strong { color: var(--ink); font-weight: 600; }
+
+	footer { border-top: 1px solid var(--rule); padding-top: 18px; display: flex; flex-direction: column; gap: 10px; }
+	footer p { margin: 0; font-size: 13.5px; color: var(--ink-3); }
+	footer code { font-family: var(--mono); }
+	a { color: var(--accent); }
+	a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+
+<div class="wrap">
+
+	<header class="masthead">
+		<p class="eyebrow">github.com/joaopinto15/skills</p>
+		<h1>Pinto Skill Library</h1>
+		<p class="lede">28 skill folders in 4 categories. Each one holds a <code>SKILL.md</code>: frontmatter naming the skill, a description that decides when it fires, and the instructions the agent follows. This page is generated from those files, so it cannot drift from them.</p>
+
+		<div class="stats">
+			<div class="stat"><b>28</b><span>skill folders</span></div>
+			<div class="stat"><b>15</b><span>you type</span></div>
+			<div class="stat"><b>12</b><span>agent picks</span></div>
+			<div class="stat"><b>4</b><span>categories</span></div>
+			<div class="stat"><b>1</b><span>empty stub</span></div>
+		</div>
+
+		<div class="legend">
+			<span class="pill typed">typed</span>
+			<p>Carries <code>disable-model-invocation: true</code>, so only <code>/name</code> starts it.</p>
+		</div>
+		<div class="legend">
+			<span class="pill auto">agent</span>
+			<p>No flag, so the agent may start it from the description alone.</p>
+		</div>
+	</header>
+
+	<figure>
+		<div class="figbox">
+			<svg viewBox="0 0 920 300" role="img" aria-label="A skill travels from its SKILL.md file through either the setup.sh symlink or a plugin install into an agent session, where you can start it by typing its name, or the agent can start it from the description unless disable-model-invocation is set.">
+				<defs>
+					<marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+						<polygon points="0,1 10,5 0,9" fill="currentColor"></polygon>
+					</marker>
+				</defs>
+
+				<polyline class="dgm-line" points="196,150 216,150 216,74 238,74" marker-end="url(#ah)"></polyline>
+				<polyline class="dgm-line" points="196,150 216,150 216,226 238,226" marker-end="url(#ah)"></polyline>
+				<polyline class="dgm-line" points="436,74 458,74 458,150 480,150" marker-end="url(#ah)"></polyline>
+				<polyline class="dgm-line" points="436,226 458,226 458,150 480,150" marker-end="url(#ah)"></polyline>
+				<polyline class="dgm-line" points="652,150 676,150 676,74 700,74" marker-end="url(#ah)" stroke="var(--stamp)" color="var(--stamp)"></polyline>
+				<polyline class="dgm-line" points="652,150 676,150 676,226 700,226" marker-end="url(#ah)" stroke="var(--accent)" color="var(--accent)"></polyline>
+
+				<rect class="dgm-box" x="14" y="118" width="182" height="64"></rect>
+				<text class="dgm-name" x="28" y="144">SKILL.md</text>
+				<text class="dgm-sub" x="28" y="164">name, description, body</text>
+
+				<rect class="dgm-box" x="238" y="46" width="198" height="56"></rect>
+				<text class="dgm-name" x="252" y="70">setup.sh</text>
+				<text class="dgm-sub" x="252" y="89">symlink in ~/.claude/skills</text>
+
+				<rect class="dgm-box" x="238" y="198" width="198" height="56"></rect>
+				<text class="dgm-name" x="252" y="222">/plugin install</text>
+				<text class="dgm-sub" x="252" y="241">one plugin per category</text>
+
+				<rect class="dgm-box" x="480" y="118" width="172" height="64"></rect>
+				<text class="dgm-name" x="494" y="144">agent session</text>
+				<text class="dgm-sub" x="494" y="164">reads name, description</text>
+
+				<rect class="dgm-box" x="700" y="46" width="206" height="56"></rect>
+				<text class="dgm-name" x="714" y="70">you type /name</text>
+				<text class="dgm-sub" x="714" y="89">all 27 loadable skills</text>
+
+				<rect class="dgm-box" x="700" y="198" width="206" height="56"></rect>
+				<text class="dgm-name" x="714" y="222">agent picks it</text>
+				<text class="dgm-sub" x="714" y="241">the 12 without the flag</text>
+
+				<text class="dgm-edge" x="222" y="112">local clone</text>
+				<text class="dgm-edge" x="222" y="192">marketplace</text>
+				<text class="dgm-edge" x="464" y="112">loads</text>
+				<text class="dgm-edge" x="464" y="192">loads</text>
+				<text class="dgm-edge" x="682" y="112">always</text>
+				<text class="dgm-edge" x="682" y="192">by description</text>
+			</svg>
+		</div>
+		<figcaption>Two install routes, one loading step, two ways to start a skill. The lower right path is the one <code>disable-model-invocation: true</code> closes off, and that flag is what the pill on each card below records.</figcaption>
+	</figure>
+
+	<section class="cat">
+		<div class="cathead">
+			<h2>coding</h2>
+			<span class="count">11 skills, 3 typed</span>
+			<span class="install">/plugin install coding@skills</span>
+		</div>
+		<div class="grid">
+			<article class="card">
+				<div class="cardtop"><span class="cardname">code-review</span><span class="pill auto">agent</span></div>
+				<p class="cardtext">Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes: Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/spec asked for?).</p>
+				<div class="cardpath">coding/skills/code-review</div>
+			</article>
+			<article class="card">
+				<div class="cardtop"><span class="cardname">codebase-design</span><span class="pill auto">agent</span></div>
+				<p class="cardtext">Shared vocabulary for designing deep modules.</p>
+				<div class="cardpath">coding/skills/codebase-design</div>
+			</article>
+			<article class="card">
+				<div class="cardtop"><span class="cardname">diagnosing-bugs</span><span class="pill auto">agent</span></div>
+				<p class="cardtext">Diagnosis loop for hard bugs and performance regressions.</p>
+				<div class="cardpath">coding/skills/diagnosing-bugs</div>
+			</article>
+			<article class="card">
+				<div class="cardtop"><span class="cardname">domain-modeling</span><span class="pill auto">agent</span></div>
+				<p class="cardtext">Build and sharpen a project's domain model.</p>
+				<div class="cardpath">coding/skills/domain-modeling</div>
+			</article>
+			<article class="card">
+				<div class="cardtop"><span class="cardname">implement</span><span class="pill typed">typed</span></div>
+				<p class="cardtext">Implement a piece of work based on a spec or set of tickets.</p>
+				<div class="cardpath">coding/skills/implement</div>
+			</article>
+			<article class="card">
+				<div class="cardtop"><span class="cardname">improve-codebase-architecture</span><span class="pill typed">typed</span></div>
+				<p class="cardtext">Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick.</p>
+				<div class="cardpath">coding/skills/improve-codebase-architecture</div>
+			</article>
+			<article class="card">
+				<div class="cardtop"><span class="cardname">prototype</span><span class="pill auto">agent</span></div>
+				<p class="cardtext">Build a throwaway prototype to answer a design question.</p>
+				<div class="cardpath">coding/skills/prototype</div>
+			</article>
+			<article class="card">
+				<div class="cardtop"><span class="cardname">resolving-merge-conflicts</span><span class="pill auto">agent</span></div>
+				<p class="cardtext">You need to resolve an in-progress git merge/rebase conflict.</p>
+				<div class="cardpath">coding/skills/resolving-merge-conflicts</div>
+			</article>
+			<article class="card">
+				<div class="cardtop"><span class="cardname">show-me-your-work</span><span class="pill typed">typed</span></div>
+				<p class="cardtext">Keep a reviewable decision trail for long-running or unattended work: a TSV log with one row per decision (what, why, evidence, result). Local by default; commit it when a reviewer needs the trail to trust the result.</p>
+				<div class="cardpath">coding/skills/show-me-your-work</div>
+			</article>
+			<article class="card">
+				<div class="cardtop"><span class="cardname">tdd</span><span class="pill auto">agent</span></div>
+				<p class="cardtext">Test-driven development.</p>
+				<div class="cardpath">coding/skills/tdd</div>
+			</article>
+			<article class="card">
+				<div class="cardtop"><span class="cardname">writing-for-agents</span><span class="pill auto">agent</span></div>
+				<p class="cardtext">Writing documents for agents.</p>
+				<div class="cardpath">coding/skills/writing-for-agents</div>
+			</article>
+		</div>
+	</section>
+
+	<section class="cat">
+		<div class="cathead">
+			<h2>general</h2>
+			<span class="count">7 skills, 4 typed</span>
+			<span class="install">/plugin install general@skills</span>
+		</div>
+		<div class="grid">
+			<article class="card">
+				<div class="cardtop"><span class="cardname">grill-me</span><span class="pill typed">typed</span></div>
+				<p class="cardtext">A relentless interview to sharpen a plan or design.</p>
+				<div class="cardpath">general/skills/grill-me</div>
+			</article>
+			<article class="card">
+				<div class="cardtop"><span class="cardname">grill-with-docs</span><span class="pill typed">typed</span></div>
+				<p class="cardtext">A relentless interview to sharpen a plan or design, which also creates docs (ADR's and glossary) as we go.</p>
+				<div class="cardpath">general/skills/grill-with-docs</div>
+			</article>
+			<article class="card">
+				<div class="cardtop"><span class="cardname">grilling</span><span class="pill auto">agent</span></div>
+				<p class="cardtext">Grill the user relentlessly about a plan, decision, or idea.</p>
+				<div class="cardpath">general/skills/grilling</div>
+			</article>
+			<article class="card">
+				<div class="cardtop"><span class="cardname">handoff</span><span class="pill typed">typed</span></div>
+				<p class="cardtext">Compact the current conversation into a handoff document for another agent to pick up.</p>
+				<div class="cardpath">general/skills/handoff</div>
+			</article>
+			<article class="card">
+				<div class="cardtop"><span class="cardname">research</span><span class="pill auto">agent</span></div>
+				<p class="cardtext">Investigate a question against high-trust primary sources and capture the findings as a Markdown file in the repo.</p>
+				<div class="cardpath">general/skills/research</div>
+			</article>
+			<article class="card">
+				<div class="cardtop"><span class="cardname">unslop</span><span class="pill auto">agent</span></div>
+				<p class="cardtext">Cut AI tells from any writing. Must always apply.</p>
+				<div class="cardpath">general/skills/unslop</div>
+			</article>
+			<article class="card">
+				<div class="cardtop"><span class="cardname">wait-what</span><span class="pill typed">typed</span></div>
+				<p class="cardtext">Stop. That last message did not land: re-pitch it.</p>
+				<div class="cardpath">general/skills/wait-what</div>
+			</article>
+		</div>
+	</section>
+
+	<section class="cat">
+		<div class="cathead">
+			<h2>productivity</h2>
+			<span class="count">9 skills, 8 typed</span>
+			<span class="install">/plugin install productivity@skills</span>
+		</div>
+		<div class="grid">
+			<article class="card">
+				<div class="cardtop"><span class="cardname">ask-matt</span><span class="pill typed">typed</span></div>
+				<p class="cardtext">Ask which skill or flow fits your situation. A router over the skills in this repo.</p>
+				<div class="cardpath">productivity/skills/ask-matt</div>
+			</article>
+			<article class="card">
+				<div class="cardtop"><span class="cardname">bro</span><span class="pill typed">typed</span></div>
+				<p class="cardtext">Restate the last message in plain human language, with no jargon.</p>
+				<div class="cardpath">productivity/skills/bro</div>
+			</article>
+			<article class="card">
+				<div class="cardtop"><span class="cardname">setup-matt-pocock-skills</span><span class="pill typed">typed</span></div>
+				<p class="cardtext">Configure this repo for the engineering skills: set up its issue tracker, triage label vocabulary, and domain doc layout. Run once before first use of the other engineering skills.</p>
+				<div class="cardpath">productivity/skills/setup-matt-pocock-skills</div>
+			</article>
+			<article class="card">
+				<div class="cardtop"><span class="cardname">technical-writing</span><span class="pill typed">typed</span></div>
+				<p class="cardtext">Layered technical-writing standard: Diátaxis structure, Google developer style sentences, STE instruction rules, Global English syntax.</p>
+				<div class="cardpath">productivity/skills/technical-writing</div>
+			</article>
+			<article class="card">
+				<div class="cardtop"><span class="cardname">to-spec</span><span class="pill typed">typed</span></div>
+				<p class="cardtext">Turn the current conversation into a spec and publish it to the project issue tracker: no interview, just synthesis of what you've already discussed.</p>
+				<div class="cardpath">productivity/skills/to-spec</div>
+			</article>
+			<article class="card">
+				<div class="cardtop"><span class="cardname">to-tickets</span><span class="pill typed">typed</span></div>
+				<p class="cardtext">Break a plan, spec, or the current conversation into a set of tracer-bullet tickets, each declaring its blocking edges, published to the configured tracker (edges as text in one file per ticket locally, or native blocking links on a real tracker).</p>
+				<div class="cardpath">productivity/skills/to-tickets</div>
+			</article>
+			<article class="card">
+				<div class="cardtop"><span class="cardname">triage</span><span class="pill typed">typed</span></div>
+				<p class="cardtext">Move issues and external PRs through a state machine of triage roles, categorise, verify, grill if needed, and write agent-ready briefs.</p>
+				<div class="cardpath">productivity/skills/triage</div>
+			</article>
+			<article class="card">
+				<div class="cardtop"><span class="cardname">wayfinder</span><span class="pill typed">typed</span></div>
+				<p class="cardtext">Plan a huge chunk of work (more than one agent session can hold) as a shared map of decision tickets on your issue tracker, and resolve them one at a time until the way to the destination is clear.</p>
+				<div class="cardpath">productivity/skills/wayfinder</div>
+			</article>
+			<article class="card">
+				<div class="cardtop"><span class="cardname">wizard</span><span class="pill auto">agent</span></div>
+				<p class="cardtext">Generate an interactive bash wizard that walks a human through steps only they can perform.</p>
+				<div class="cardpath">productivity/skills/wizard</div>
+			</article>
+		</div>
+	</section>
+
+	<section class="cat">
+		<div class="cathead">
+			<h2>personal</h2>
+			<span class="count">1 folder, 0 typed</span>
+			<span class="install">/plugin install personal@skills</span>
+		</div>
+		<div class="grid">
+			<article class="card">
+				<div class="cardtop"><span class="cardname">google-cli</span><span class="pill stub">empty</span></div>
+				<p class="cardtext">The folder is there. The file has nothing in it yet.</p>
+				<div class="cardpath">personal/skills/google-cli</div>
+			</article>
+		</div>
+		<p class="note"><strong>One skill here does not load.</strong> <code>personal/skills/google-cli/SKILL.md</code> has no <code>name</code> and no <code>description</code>, so it never reaches a session.</p>
+	</section>
+
+	<footer>
+		<p>Generated by <code>tools/build-catalog.mjs</code> from the <code>SKILL.md</code> frontmatter at commit <code>062bee2</code>. Each card shows the opening of the skill's description, with the trigger phrases trimmed off.</p>
+		<p>Edit a skill, push, and the workflow in <code>.github/workflows/catalog.yml</code> rebuilds this page.</p>
+	</footer>
+
+</div>
