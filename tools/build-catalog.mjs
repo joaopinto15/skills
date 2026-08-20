@@ -106,7 +106,7 @@ const card = (s) => {
 		: s.bytes === 0
 			? "The folder is there. The file has nothing in it yet."
 			: "No frontmatter, so this file does not load as a skill.";
-	return `			<a class="card" href="${BLOB}/${esc(s.path)}/SKILL.md">
+	return `			<a class="card" href="${BLOB}/${esc(s.path)}/SKILL.md" target="_blank" rel="noopener">
 				<div class="cardtop"><span class="cardname">${esc(s.name)}${ARROW}</span>${pill}</div>
 				<p class="cardtext">${text}</p>
 				<span class="cardpath">${esc(s.path)}</span>
