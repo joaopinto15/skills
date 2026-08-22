@@ -1,6 +1,6 @@
 {
   "name": "personal",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Machine-specific one-offs.",
   "author": { "name": "Joao Pinto", "url": "https://github.com/joaopinto15" }
 }
