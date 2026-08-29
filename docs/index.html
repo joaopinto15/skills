@@ -4,262 +4,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
-
-<style>
-	/* Neutrals: shadcn, the same tokens as the portfolio.
-	   Category hues: checked with the palette validator, all pairs, both themes. */
-	:root {
-		--background: oklch(1 0 0);
-		--foreground: oklch(0.145 0 0);
-		--card: oklch(1 0 0);
-		--muted: oklch(0.97 0 0);
-		--muted-foreground: oklch(0.556 0 0);
-		--accent: oklch(0.97 0 0);
-		--border: oklch(0.922 0 0);
-		--primary: oklch(0.205 0 0);
-		--primary-foreground: oklch(0.985 0 0);
-		--warn: oklch(0.55 0.15 55);
-		--ring: oklch(0.708 0 0);
-		--radius: 0.625rem;
-
-		--cat-1: #1447e6;
-		--cat-2: #009689;
-		--cat-3: #f54900;
-		--cat-4: #a800b7;
-
-		--sans: "Geist", ui-sans-serif, system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
-		--mono: "Geist Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
-	}
-
-	@media (prefers-color-scheme: dark) {
-		:root:not([data-theme="light"]) {
-			--background: oklch(0.18 0 0);
-			--foreground: oklch(0.985 0 0);
-			--card: oklch(0.205 0 0);
-			--muted: oklch(0.269 0 0);
-			--muted-foreground: oklch(0.708 0 0);
-			--accent: oklch(0.269 0 0);
-			--border: oklch(1 0 0 / 12%);
-			--primary: oklch(0.922 0 0);
-			--primary-foreground: oklch(0.205 0 0);
-			--warn: oklch(0.828 0.189 84.429);
-			--ring: oklch(0.556 0 0);
-			--cat-1: #2b7fff;
-		}
-	}
-
-	:root[data-theme="dark"], .dark {
-		--background: oklch(0.18 0 0);
-		--foreground: oklch(0.985 0 0);
-		--card: oklch(0.205 0 0);
-		--muted: oklch(0.269 0 0);
-		--muted-foreground: oklch(0.708 0 0);
-		--accent: oklch(0.269 0 0);
-		--border: oklch(1 0 0 / 12%);
-		--primary: oklch(0.922 0 0);
-		--primary-foreground: oklch(0.205 0 0);
-		--warn: oklch(0.828 0.189 84.429);
-		--ring: oklch(0.556 0 0);
-		--cat-1: #2b7fff;
-	}
-
-	* { box-sizing: border-box; }
-
-	body {
-		margin: 0;
-		background: var(--background);
-		color: var(--foreground);
-		font-family: var(--sans);
-		font-size: 16px;
-		line-height: 1.6;
-		-webkit-font-smoothing: antialiased;
-	}
-
-	.wrap {
-		max-width: 1024px;
-		margin: 0 auto;
-		padding: clamp(28px, 6vw, 64px) clamp(16px, 4vw, 32px) 80px;
-		display: flex;
-		flex-direction: column;
-		gap: 56px;
-	}
-
-	.masthead { display: flex; flex-direction: column; gap: 20px; }
-
-	.eyebrow { font-family: var(--mono); font-size: 12.5px; color: var(--muted-foreground); margin: 0; }
-	.eyebrow a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--border); }
-	.eyebrow a:hover { color: var(--foreground); }
-
-	h1 {
-		font-size: clamp(30px, 5.5vw, 48px);
-		font-weight: 600;
-		letter-spacing: -0.045em;
-		line-height: 1.05;
-		text-wrap: balance;
-		margin: 0;
-	}
-
-	.lede { max-width: 65ch; font-size: 17px; color: var(--muted-foreground); margin: 0; }
-
-	code { font-family: var(--mono); }
-	.lede code, .note code, .cardtext code {
-		font-size: 0.85em;
-		background: var(--muted);
-		border: 1px solid var(--border);
-		border-radius: calc(var(--radius) - 4px);
-		padding: 1px 5px;
-		color: var(--foreground);
-	}
-
-	/* what the library is made of: one segment per category, 2px surface gaps */
-	.barwrap { display: flex; flex-direction: column; gap: 12px; }
-	.bar { display: flex; gap: 2px; height: 10px; }
-	.seg { background: var(--hue); border-radius: 4px; min-width: 6px; }
-
-	.keys { display: flex; flex-wrap: wrap; gap: 8px 18px; }
-	.key {
-		display: inline-flex;
-		align-items: center;
-		gap: 7px;
-		font-size: 14px;
-		color: var(--muted-foreground);
-		text-decoration: none;
-	}
-	.key:hover { color: var(--foreground); }
-	.key b { color: var(--foreground); font-weight: 600; font-variant-numeric: tabular-nums; }
-	.key:focus-visible { outline: 2px solid var(--hue); outline-offset: 3px; border-radius: 4px; }
-
-	.dot { width: 10px; height: 10px; border-radius: 999px; background: var(--hue); flex: none; }
-
-	.stats {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-		border: 1px solid var(--border);
-		border-radius: var(--radius);
-		overflow: hidden;
-		background: var(--card);
-	}
-	.stat { padding: 14px 18px; border-right: 1px solid var(--border); display: flex; flex-direction: column; gap: 1px; }
-	.stat:last-child { border-right: 0; }
-	.stat b { font-size: 26px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.2; font-variant-numeric: tabular-nums; }
-	.stat span { font-size: 13px; color: var(--muted-foreground); }
-	.stat.flag b { color: var(--warn); }
-
-	.legend { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
-	.legend p { margin: 0; font-size: 14px; color: var(--muted-foreground); }
-
-	.pill {
-		font-family: var(--mono);
-		font-size: 11px;
-		font-weight: 500;
-		padding: 2px 8px;
-		border-radius: 999px;
-		border: 1px solid transparent;
-		white-space: nowrap;
-		flex: none;
-	}
-	.pill.typed { background: var(--primary); color: var(--primary-foreground); }
-	.pill.outline { border-color: var(--border); color: var(--muted-foreground); }
-	.pill.stub { border-color: var(--warn); color: var(--warn); }
-
-	figure { margin: 0; display: flex; flex-direction: column; gap: 12px; }
-	.figbox {
-		overflow-x: auto;
-		background: var(--card);
-		border: 1px solid var(--border);
-		border-radius: var(--radius);
-		padding: 22px;
-	}
-	.figbox svg { display: block; min-width: 720px; max-width: 100%; height: auto; color: var(--muted-foreground); }
-	figcaption { font-size: 14px; color: var(--muted-foreground); max-width: 74ch; }
-
-	.dgm-box { fill: var(--muted); stroke: var(--border); }
-	.dgm-name { font-family: var(--mono); font-size: 12.5px; font-weight: 500; fill: var(--foreground); }
-	.dgm-sub { font-size: 11.5px; fill: var(--muted-foreground); }
-	.dgm-edge { font-family: var(--mono); font-size: 10.5px; fill: var(--muted-foreground); }
-	.dgm-line { fill: none; stroke: currentColor; stroke-width: 1.25; }
-	.dgm-solid { stroke: var(--foreground); }
-	.dgm-dashed { stroke: var(--foreground); stroke-dasharray: 5 4; }
-
-	.cat { display: flex; flex-direction: column; gap: 16px; scroll-margin-top: 24px; }
-	.cathead {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: 6px 12px;
-		padding-bottom: 12px;
-		border-bottom: 2px solid color-mix(in oklab, var(--hue) 60%, transparent);
-	}
-	.cathead h2 { font-size: 22px; font-weight: 600; letter-spacing: -0.03em; margin: 0; }
-	.cathead .count { font-size: 13.5px; color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
-	.cathead .install { font-size: 12px; color: var(--muted-foreground); margin-left: auto; }
-
-	.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(264px, 1fr)); gap: 12px; }
-
-	.card {
-		background: var(--card);
-		border: 1px solid var(--border);
-		border-radius: var(--radius);
-		padding: 14px 16px;
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
-		color: inherit;
-		text-decoration: none;
-		transition: background-color 0.15s ease, border-color 0.15s ease;
-	}
-	.card:hover {
-		background: color-mix(in oklab, var(--hue) 7%, var(--card));
-		border-color: color-mix(in oklab, var(--hue) 55%, var(--border));
-	}
-	.card:focus-visible { outline: 2px solid var(--hue); outline-offset: 2px; }
-	.cardtop { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-	.cardname {
-		font-family: var(--mono);
-		font-size: 13.5px;
-		font-weight: 600;
-		letter-spacing: -0.02em;
-		display: inline-flex;
-		align-items: center;
-		gap: 4px;
-		word-break: break-word;
-	}
-	.arrow { color: var(--hue); flex: none; transition: transform 0.15s ease; }
-	.card:hover .arrow { transform: translate(1px, -1px); }
-	.cardtext { margin: 0; font-size: 14px; color: var(--muted-foreground); }
-	.cardpath {
-		font-family: var(--mono);
-		font-size: 11px;
-		color: var(--muted-foreground);
-		opacity: 0.75;
-		margin-top: auto;
-		padding-top: 8px;
-		word-break: break-all;
-	}
-
-	.note {
-		background: var(--muted);
-		border: 1px solid var(--border);
-		border-left: 4px solid var(--warn);
-		border-radius: var(--radius);
-		border-top-left-radius: 0;
-		border-bottom-left-radius: 0;
-		padding: 14px 16px;
-		font-size: 14px;
-		color: var(--muted-foreground);
-		margin: 0;
-	}
-	.note strong { color: var(--foreground); font-weight: 600; }
-
-	footer { border-top: 1px solid var(--border); padding-top: 20px; display: flex; flex-direction: column; gap: 8px; }
-	footer p { margin: 0; font-size: 13px; color: var(--muted-foreground); }
-	footer a { color: var(--foreground); text-decoration: underline; text-underline-offset: 4px; }
-
-	@media (prefers-reduced-motion: reduce) {
-		.card, .arrow { transition: none; }
-		.card:hover .arrow { transform: none; }
-	}
-</style>
+<link rel="stylesheet" href="./style.css">
 
 <div class="wrap">
 
@@ -359,57 +104,57 @@
 			<code class="install">/plugin install coding@skills</code>
 		</div>
 		<div class="grid">
-			<a class="card" href="https://github.com/joaopinto15/skills/blob/main/coding/skills/code-review/SKILL.md" target="_blank" rel="noopener">
+			<a class="card" href="./coding/code-review.html">
 				<div class="cardtop"><span class="cardname">code-review<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill outline">agent</span></div>
 				<p class="cardtext">Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes: Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/spec asked for?).</p>
 				<span class="cardpath">coding/skills/code-review</span>
 			</a>
-			<a class="card" href="https://github.com/joaopinto15/skills/blob/main/coding/skills/codebase-design/SKILL.md" target="_blank" rel="noopener">
+			<a class="card" href="./coding/codebase-design.html">
 				<div class="cardtop"><span class="cardname">codebase-design<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill outline">agent</span></div>
 				<p class="cardtext">Shared vocabulary for designing deep modules.</p>
 				<span class="cardpath">coding/skills/codebase-design</span>
 			</a>
-			<a class="card" href="https://github.com/joaopinto15/skills/blob/main/coding/skills/diagnosing-bugs/SKILL.md" target="_blank" rel="noopener">
+			<a class="card" href="./coding/diagnosing-bugs.html">
 				<div class="cardtop"><span class="cardname">diagnosing-bugs<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill outline">agent</span></div>
 				<p class="cardtext">Diagnosis loop for hard bugs and performance regressions.</p>
 				<span class="cardpath">coding/skills/diagnosing-bugs</span>
 			</a>
-			<a class="card" href="https://github.com/joaopinto15/skills/blob/main/coding/skills/domain-modeling/SKILL.md" target="_blank" rel="noopener">
+			<a class="card" href="./coding/domain-modeling.html">
 				<div class="cardtop"><span class="cardname">domain-modeling<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill outline">agent</span></div>
 				<p class="cardtext">Build and sharpen a project's domain model.</p>
 				<span class="cardpath">coding/skills/domain-modeling</span>
 			</a>
-			<a class="card" href="https://github.com/joaopinto15/skills/blob/main/coding/skills/implement/SKILL.md" target="_blank" rel="noopener">
+			<a class="card" href="./coding/implement.html">
 				<div class="cardtop"><span class="cardname">implement<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill typed">typed</span></div>
 				<p class="cardtext">Implement a piece of work based on a spec or set of tickets.</p>
 				<span class="cardpath">coding/skills/implement</span>
 			</a>
-			<a class="card" href="https://github.com/joaopinto15/skills/blob/main/coding/skills/improve-codebase-architecture/SKILL.md" target="_blank" rel="noopener">
+			<a class="card" href="./coding/improve-codebase-architecture.html">
 				<div class="cardtop"><span class="cardname">improve-codebase-architecture<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill typed">typed</span></div>
 				<p class="cardtext">Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick.</p>
 				<span class="cardpath">coding/skills/improve-codebase-architecture</span>
 			</a>
-			<a class="card" href="https://github.com/joaopinto15/skills/blob/main/coding/skills/prototype/SKILL.md" target="_blank" rel="noopener">
+			<a class="card" href="./coding/prototype.html">
 				<div class="cardtop"><span class="cardname">prototype<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill outline">agent</span></div>
 				<p class="cardtext">Build a throwaway prototype to answer a design question.</p>
 				<span class="cardpath">coding/skills/prototype</span>
 			</a>
-			<a class="card" href="https://github.com/joaopinto15/skills/blob/main/coding/skills/resolving-merge-conflicts/SKILL.md" target="_blank" rel="noopener">
+			<a class="card" href="./coding/resolving-merge-conflicts.html">
 				<div class="cardtop"><span class="cardname">resolving-merge-conflicts<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill outline">agent</span></div>
 				<p class="cardtext">You need to resolve an in-progress git merge/rebase conflict.</p>
 				<span class="cardpath">coding/skills/resolving-merge-conflicts</span>
 			</a>
-			<a class="card" href="https://github.com/joaopinto15/skills/blob/main/coding/skills/show-me-your-work/SKILL.md" target="_blank" rel="noopener">
+			<a class="card" href="./coding/show-me-your-work.html">
 				<div class="cardtop"><span class="cardname">show-me-your-work<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill typed">typed</span></div>
 				<p class="cardtext">Keep a reviewable decision trail for long-running or unattended work. A TSV log with one row per decision (what, why, evidence, result). Local by default; commit it when a reviewer needs the trail to trust the result.</p>
 				<span class="cardpath">coding/skills/show-me-your-work</span>
 			</a>
-			<a class="card" href="https://github.com/joaopinto15/skills/blob/main/coding/skills/tdd/SKILL.md" target="_blank" rel="noopener">
+			<a class="card" href="./coding/tdd.html">
 				<div class="cardtop"><span class="cardname">tdd<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill outline">agent</span></div>
 				<p class="cardtext">Test-driven development.</p>
 				<span class="cardpath">coding/skills/tdd</span>
 			</a>
-			<a class="card" href="https://github.com/joaopinto15/skills/blob/main/coding/skills/writing-for-agents/SKILL.md" target="_blank" rel="noopener">
+			<a class="card" href="./coding/writing-for-agents.html">
 				<div class="cardtop"><span class="cardname">writing-for-agents<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill outline">agent</span></div>
 				<p class="cardtext">Writing documents for agents.</p>
 				<span class="cardpath">coding/skills/writing-for-agents</span>
@@ -425,37 +170,37 @@
 			<code class="install">/plugin install general@skills</code>
 		</div>
 		<div class="grid">
-			<a class="card" href="https://github.com/joaopinto15/skills/blob/main/general/skills/grill-me/SKILL.md" target="_blank" rel="noopener">
+			<a class="card" href="./general/grill-me.html">
 				<div class="cardtop"><span class="cardname">grill-me<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill typed">typed</span></div>
 				<p class="cardtext">A relentless interview to sharpen a plan or design.</p>
 				<span class="cardpath">general/skills/grill-me</span>
 			</a>
-			<a class="card" href="https://github.com/joaopinto15/skills/blob/main/general/skills/grill-with-docs/SKILL.md" target="_blank" rel="noopener">
+			<a class="card" href="./general/grill-with-docs.html">
 				<div class="cardtop"><span class="cardname">grill-with-docs<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill typed">typed</span></div>
 				<p class="cardtext">A relentless interview to sharpen a plan or design, which also creates docs (ADR's and glossary) as we go.</p>
 				<span class="cardpath">general/skills/grill-with-docs</span>
 			</a>
-			<a class="card" href="https://github.com/joaopinto15/skills/blob/main/general/skills/grilling/SKILL.md" target="_blank" rel="noopener">
+			<a class="card" href="./general/grilling.html">
 				<div class="cardtop"><span class="cardname">grilling<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill outline">agent</span></div>
 				<p class="cardtext">Grill the user relentlessly about a plan, decision, or idea.</p>
 				<span class="cardpath">general/skills/grilling</span>
 			</a>
-			<a class="card" href="https://github.com/joaopinto15/skills/blob/main/general/skills/handoff/SKILL.md" target="_blank" rel="noopener">
+			<a class="card" href="./general/handoff.html">
 				<div class="cardtop"><span class="cardname">handoff<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill typed">typed</span></div>
 				<p class="cardtext">Compact the current conversation into a handoff document for another agent to pick up.</p>
 				<span class="cardpath">general/skills/handoff</span>
 			</a>
-			<a class="card" href="https://github.com/joaopinto15/skills/blob/main/general/skills/research/SKILL.md" target="_blank" rel="noopener">
+			<a class="card" href="./general/research.html">
 				<div class="cardtop"><span class="cardname">research<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill outline">agent</span></div>
 				<p class="cardtext">Investigate a question against high-trust primary sources and capture the findings as a Markdown file in the repo.</p>
 				<span class="cardpath">general/skills/research</span>
 			</a>
-			<a class="card" href="https://github.com/joaopinto15/skills/blob/main/general/skills/unslop/SKILL.md" target="_blank" rel="noopener">
+			<a class="card" href="./general/unslop.html">
 				<div class="cardtop"><span class="cardname">unslop<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill outline">agent</span></div>
 				<p class="cardtext">Cut AI tells from any writing. Must always apply.</p>
 				<span class="cardpath">general/skills/unslop</span>
 			</a>
-			<a class="card" href="https://github.com/joaopinto15/skills/blob/main/general/skills/wait-what/SKILL.md" target="_blank" rel="noopener">
+			<a class="card" href="./general/wait-what.html">
 				<div class="cardtop"><span class="cardname">wait-what<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill typed">typed</span></div>
 				<p class="cardtext">Stop. That last message did not land. Re-pitch it.</p>
 				<span class="cardpath">general/skills/wait-what</span>
@@ -471,47 +216,47 @@
 			<code class="install">/plugin install productivity@skills</code>
 		</div>
 		<div class="grid">
-			<a class="card" href="https://github.com/joaopinto15/skills/blob/main/productivity/skills/ask-matt/SKILL.md" target="_blank" rel="noopener">
+			<a class="card" href="./productivity/ask-matt.html">
 				<div class="cardtop"><span class="cardname">ask-matt<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill typed">typed</span></div>
 				<p class="cardtext">Ask which skill or flow fits your situation. A router over the skills in this repo.</p>
 				<span class="cardpath">productivity/skills/ask-matt</span>
 			</a>
-			<a class="card" href="https://github.com/joaopinto15/skills/blob/main/productivity/skills/bro/SKILL.md" target="_blank" rel="noopener">
+			<a class="card" href="./productivity/bro.html">
 				<div class="cardtop"><span class="cardname">bro<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill typed">typed</span></div>
 				<p class="cardtext">Restate the last message in plain human language, with no jargon.</p>
 				<span class="cardpath">productivity/skills/bro</span>
 			</a>
-			<a class="card" href="https://github.com/joaopinto15/skills/blob/main/productivity/skills/setup-matt-pocock-skills/SKILL.md" target="_blank" rel="noopener">
+			<a class="card" href="./productivity/setup-matt-pocock-skills.html">
 				<div class="cardtop"><span class="cardname">setup-matt-pocock-skills<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill typed">typed</span></div>
 				<p class="cardtext">Configure this repo for the engineering skills. Sets up its issue tracker, triage label vocabulary, and domain doc layout. Run once before first use of the other engineering skills.</p>
 				<span class="cardpath">productivity/skills/setup-matt-pocock-skills</span>
 			</a>
-			<a class="card" href="https://github.com/joaopinto15/skills/blob/main/productivity/skills/technical-writing/SKILL.md" target="_blank" rel="noopener">
+			<a class="card" href="./productivity/technical-writing.html">
 				<div class="cardtop"><span class="cardname">technical-writing<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill typed">typed</span></div>
 				<p class="cardtext">Layered technical-writing standard: Diátaxis structure, Google developer style sentences, STE instruction rules, Global English syntax.</p>
 				<span class="cardpath">productivity/skills/technical-writing</span>
 			</a>
-			<a class="card" href="https://github.com/joaopinto15/skills/blob/main/productivity/skills/to-spec/SKILL.md" target="_blank" rel="noopener">
+			<a class="card" href="./productivity/to-spec.html">
 				<div class="cardtop"><span class="cardname">to-spec<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill typed">typed</span></div>
 				<p class="cardtext">Turn the current conversation into a spec and publish it to the project issue tracker. No interview, just synthesis of what you've already discussed.</p>
 				<span class="cardpath">productivity/skills/to-spec</span>
 			</a>
-			<a class="card" href="https://github.com/joaopinto15/skills/blob/main/productivity/skills/to-tickets/SKILL.md" target="_blank" rel="noopener">
+			<a class="card" href="./productivity/to-tickets.html">
 				<div class="cardtop"><span class="cardname">to-tickets<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill typed">typed</span></div>
 				<p class="cardtext">Break a plan, spec, or the current conversation into a set of tracer-bullet tickets, each declaring its blocking edges, published to the configured tracker (edges as text in one file per ticket locally, or native blocking links on a real tracker).</p>
 				<span class="cardpath">productivity/skills/to-tickets</span>
 			</a>
-			<a class="card" href="https://github.com/joaopinto15/skills/blob/main/productivity/skills/triage/SKILL.md" target="_blank" rel="noopener">
+			<a class="card" href="./productivity/triage.html">
 				<div class="cardtop"><span class="cardname">triage<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill typed">typed</span></div>
 				<p class="cardtext">Move issues and external PRs through a state machine of triage roles, categorise, verify, grill if needed, and write agent-ready briefs.</p>
 				<span class="cardpath">productivity/skills/triage</span>
 			</a>
-			<a class="card" href="https://github.com/joaopinto15/skills/blob/main/productivity/skills/wayfinder/SKILL.md" target="_blank" rel="noopener">
+			<a class="card" href="./productivity/wayfinder.html">
 				<div class="cardtop"><span class="cardname">wayfinder<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill typed">typed</span></div>
 				<p class="cardtext">Plan a huge chunk of work (more than one agent session can hold) as a shared map of decision tickets on your issue tracker, and resolve them one at a time until the way to the destination is clear.</p>
 				<span class="cardpath">productivity/skills/wayfinder</span>
 			</a>
-			<a class="card" href="https://github.com/joaopinto15/skills/blob/main/productivity/skills/wizard/SKILL.md" target="_blank" rel="noopener">
+			<a class="card" href="./productivity/wizard.html">
 				<div class="cardtop"><span class="cardname">wizard<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill outline">agent</span></div>
 				<p class="cardtext">Generate an interactive bash wizard that walks a human through steps only they can perform.</p>
 				<span class="cardpath">productivity/skills/wizard</span>
@@ -527,12 +272,12 @@
 			<code class="install">/plugin install personal@skills</code>
 		</div>
 		<div class="grid">
-			<a class="card" href="https://github.com/joaopinto15/skills/blob/main/personal/skills/gmail-create-filter/SKILL.md" target="_blank" rel="noopener">
+			<a class="card" href="./personal/gmail-create-filter.html">
 				<div class="cardtop"><span class="cardname">gmail-create-filter<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill outline">agent</span></div>
 				<p class="cardtext">Create Gmail filters with the `gws` CLI: rules that label, archive, star, or forward mail as it arrives.</p>
 				<span class="cardpath">personal/skills/gmail-create-filter</span>
 			</a>
-			<a class="card" href="https://github.com/joaopinto15/skills/blob/main/personal/skills/gmail-triage/SKILL.md" target="_blank" rel="noopener">
+			<a class="card" href="./personal/gmail-triage.html">
 				<div class="cardtop"><span class="cardname">gmail-triage<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill outline">agent</span></div>
 				<p class="cardtext">Triage Gmail with the `gws` CLI: classify inbox threads into labels, create labels on demand, and bulk-file the results of a mailbox-wide search.</p>
 				<span class="cardpath">personal/skills/gmail-triage</span>
@@ -541,8 +286,9 @@
 	</section>
 
 	<footer>
-		<p>Generated by <a href="https://github.com/joaopinto15/skills/blob/main/tools/build-catalog.mjs">tools/build-catalog.mjs</a> from the <code>SKILL.md</code> frontmatter at commit <code>6390c2d</code>. Each card shows the opening of the skill's description, with the trigger phrases trimmed off.</p>
+		<p>Generated by <a href="https://github.com/joaopinto15/skills/blob/main/tools/build-catalog.mjs">tools/build-catalog.mjs</a> from the <code>SKILL.md</code> frontmatter at commit <code>3326283</code>. Each card shows the opening of the skill's description, with the trigger phrases trimmed off.</p>
 		<p>Edit a skill, push, and the <a href="https://github.com/joaopinto15/skills/blob/main/.github/workflows/catalog.yml">catalog workflow</a> rebuilds this page.</p>
 	</footer>
 
 </div>
+

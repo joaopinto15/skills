@@ -1,0 +1,83 @@
+<title>gmail-triage · Skill Library</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Triage Gmail with the `gws` CLI: classify inbox threads into labels, create labels on demand, and bulk-file the results of a mailbox-wide search.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../style.css">
+
+<div class="wrap doc" style="--hue: var(--cat-4)">
+
+	<article>
+		<header class="skillhead">
+			<p class="crumb"><a href="../">Skill Library</a> / <a href="../#cat-personal">personal</a></p>
+			<div class="row">
+				<h1>gmail-triage</h1>
+				<span class="pill outline">agent</span>
+				<a class="src" href="https://github.com/joaopinto15/skills/blob/main/personal/skills/gmail-triage/SKILL.md" target="_blank" rel="noopener">view on GitHub ↗</a>
+			</div>
+			<p class="filepath">personal/skills/gmail-triage/SKILL.md</p>
+		</header>
+
+		<div class="md">
+<div class="tablewrap"><table class="fm">
+<thead><tr><th>Field</th><th>Value</th></tr></thead>
+<tbody>
+<tr><th scope="row"><code>name</code></th><td>gmail-triage</td></tr>
+<tr><th scope="row"><code>description</code></th><td>Triage Gmail with the `gws` CLI: classify inbox threads into labels, create labels on demand, and bulk-file the results of a mailbox-wide search. Use when the user wants mail sorted, labeled, filed, archived, or moved to a folder, and on the softer phrasings that mean the same thing, such as &quot;clean up my inbox&quot;, &quot;where did that receipt go&quot;, &quot;organize this mess&quot;.</td></tr>
+<tr><th scope="row"><code>compatibility</code></th><td>Requires the `gws` CLI, authenticated with Gmail read/modify scope.</td></tr>
+</tbody>
+</table></div>
+<h1>Gmail triage</h1>
+<p>Classify and file Gmail threads with <code>scripts/gmail.py</code>, a wrapper over
+<code>gws gmail</code>. Every Gmail action goes through it, including the ones the
+Gmail MCP tools also offer.</p>
+<h2>Commands</h2>
+<p>Rows are tab-separated: <code>thread_id</code>, <code>IN</code>/blank (in inbox?), <code>from</code>, <code>subject</code>.</p>
+<pre><code>gmail.py labels                        # user labels -&gt; label_id \t name
+gmail.py inbox [max]                   # inbox threads, ready to classify
+gmail.py search &quot;&lt;gmail query&gt;&quot; [max]  # same rows, any Gmail search
+gmail.py create-label &quot;&lt;Name&gt;&quot;         # make a label, prints its id
+gmail.py move  &lt;label_id&gt; &lt;tid&gt;...     # apply label + drop INBOX
+gmail.py label &lt;label_id&gt; &lt;tid&gt;...     # apply label, thread stays in inbox
+</code></pre>
+<p>Labels are addressed by id (<code>Label_5</code>), never display name. System ids:
+<code>INBOX TRASH SPAM STARRED UNREAD IMPORTANT SENT DRAFT</code>.</p>
+<h2>Move vs label</h2>
+<p>A <strong>move</strong> applies the label and drops <code>INBOX</code>. A <strong>label</strong> tags the thread
+where it sits. &quot;Move it to a tag/folder&quot; reads as either one casually, so ask
+which the user means when the context doesn&#39;t settle it.</p>
+<h2>Workflow</h2>
+<ol>
+<li><code>gmail.py labels</code> builds the id↔name map.</li>
+<li><code>gmail.py inbox</code>, or <code>gmail.py search &quot;&lt;query&gt;&quot;</code> for a mailbox-wide sweep.</li>
+<li>Classify each row by sender domain plus subject against the existing labels.</li>
+<li><code>gmail.py move &lt;label_id&gt; &lt;tid...&gt;</code>. One call per label, with every
+thread id for that label batched into it.</li>
+<li>Report grouped counts. Every thread from step 2 is either moved or listed
+with the reason it stayed.</li>
+</ol>
+<p>Move a thread on a <strong>confident</strong> sender/subject match. Undo is manual and
+per-thread, with no bulk equivalent, so the cost is asymmetric: an ambiguous
+thread goes on the list for the user rather than into a label.</p>
+<h2>Broad queries over-match</h2>
+<p><code>ulisboa.pt</code> hits every University of Lisbon faculty; <code>&quot;faculdade de ciências&quot;</code> hits Porto (<code>fc.up.pt</code>) and Lisbon (<code>ciencias.ulisboa.pt</code>) at
+once. Read the <code>from</code> column of a search before moving anything, and file
+the rows whose sender domain actually matches the target label.</p>
+<h2>Example</h2>
+<p>&quot;file everything from GitHub notifications under Dev, and move the Amazon
+order confirmations to Orders&quot;</p>
+<pre><code>Dev: 6 moved (notifications@github.com)
+Orders: 3 moved (auto-confirm@amazon.es, no-reply@amazon.es)
+Left in inbox: 1 (ambiguous, &quot;Re: your order&quot; from a personal address)
+</code></pre>
+
+		</div>
+
+		<footer>
+			<p>The whole file, frontmatter included, rendered at commit <code>3326283</code>. Edit it on <a href="https://github.com/joaopinto15/skills/blob/main/personal/skills/gmail-triage/SKILL.md">GitHub</a> and this page rebuilds.</p>
+			<p><a href="../">← every skill</a></p>
+		</footer>
+	</article>
+
+</div>

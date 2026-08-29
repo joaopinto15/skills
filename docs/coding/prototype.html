@@ -1,0 +1,57 @@
+<title>prototype · Skill Library</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Build a throwaway prototype to answer a design question.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../style.css">
+
+<div class="wrap doc" style="--hue: var(--cat-1)">
+
+	<article>
+		<header class="skillhead">
+			<p class="crumb"><a href="../">Skill Library</a> / <a href="../#cat-coding">coding</a></p>
+			<div class="row">
+				<h1>prototype</h1>
+				<span class="pill outline">agent</span>
+				<a class="src" href="https://github.com/joaopinto15/skills/blob/main/coding/skills/prototype/SKILL.md" target="_blank" rel="noopener">view on GitHub ↗</a>
+			</div>
+			<p class="filepath">coding/skills/prototype/SKILL.md</p>
+		</header>
+
+		<div class="md">
+<div class="tablewrap"><table class="fm">
+<thead><tr><th>Field</th><th>Value</th></tr></thead>
+<tbody>
+<tr><th scope="row"><code>name</code></th><td>prototype</td></tr>
+<tr><th scope="row"><code>description</code></th><td>Build a throwaway prototype to answer a design question. Use when the user wants to sanity-check whether a state model or logic feels right, or explore what a UI should look like.</td></tr>
+</tbody>
+</table></div>
+<h1>Prototype</h1>
+<p>A prototype is <strong>throwaway code that answers a question</strong>. The question decides the shape.</p>
+<h2>Pick a branch</h2>
+<p>Identify which question is being answered, using the user&#39;s prompt, the surrounding code, or by asking if the user is around:</p>
+<ul>
+<li><strong>&quot;Does this logic / state model feel right?&quot;</strong> → <a href="https://github.com/joaopinto15/skills/blob/main/coding/skills/prototype/LOGIC.md">LOGIC.md</a>. Build a single shareable HTML file (free-play buttons plus tabbed guided walkthroughs) that pushes the state machine through cases that are hard to reason about on paper, and that a non-developer can drive.</li>
+<li><strong>&quot;What should this look like?&quot;</strong> → <a href="https://github.com/joaopinto15/skills/blob/main/coding/skills/prototype/UI.md">UI.md</a>. Generate several radically different UI variations on a single route, switchable via a URL search param and a floating bottom bar.</li>
+</ul>
+<p>The two branches produce very different artifacts, so getting this wrong wastes the whole prototype. If the question is genuinely ambiguous and the user isn&#39;t reachable, default to whichever branch better matches the surrounding code (a backend module → logic; a page or component → UI) and state the assumption at the top of the prototype.</p>
+<h2>Rules that apply to both</h2>
+<ol>
+<li><strong>Throwaway from day one, and clearly marked as such.</strong> Locate the prototype code close to where it will actually be used (next to the module or page it&#39;s prototyping for) so context is obvious, but name it so a casual reader can see it&#39;s a prototype, not production. For throwaway UI routes, obey whatever routing convention the project already uses; don&#39;t invent a new top-level structure.</li>
+<li><strong>Trivial to run.</strong> A UI prototype starts from one command in the project&#39;s task runner: <code>pnpm &lt;name&gt;</code>, <code>python &lt;path&gt;</code>, <code>bun &lt;path&gt;</code>, etc. A logic demo is a single HTML file the user double-clicks. Either way, no thinking required to start it.</li>
+<li><strong>No persistence by default.</strong> State lives in memory. Persistence is the thing the prototype is <em>checking</em>, not something it should depend on. If the question explicitly involves a database, hit a scratch DB or a local file with a clear &quot;PROTOTYPE, wipe me&quot; name.</li>
+<li><strong>Skip the polish.</strong> No tests, no error handling beyond what makes the prototype <em>runnable</em>, no abstractions. The point is to learn something fast.</li>
+<li><strong>Surface the state.</strong> After every action (logic) or on every variant switch (UI), print or render the full relevant state so the user can see what changed.</li>
+<li><strong>Capture it when done.</strong> Fold any validated decision into the real code, then capture the prototype itself as a <strong>primary source</strong>: commit it to a throwaway branch, out of main, and leave a context pointer to that branch on the implementation issue. Capture the answer too (the verdict and the question it settled) in the issue or a commit. The main branch keeps only the validated decision.</li>
+</ol>
+
+		</div>
+
+		<footer>
+			<p>The whole file, frontmatter included, rendered at commit <code>3326283</code>. Edit it on <a href="https://github.com/joaopinto15/skills/blob/main/coding/skills/prototype/SKILL.md">GitHub</a> and this page rebuilds.</p>
+			<p><a href="../">← every skill</a></p>
+		</footer>
+	</article>
+
+</div>

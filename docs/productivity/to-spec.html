@@ -1,0 +1,94 @@
+<title>to-spec · Skill Library</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Turn the current conversation into a spec and publish it to the project issue tracker. No interview, just synthesis of what you've already discussed.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../style.css">
+
+<div class="wrap doc" style="--hue: var(--cat-3)">
+
+	<article>
+		<header class="skillhead">
+			<p class="crumb"><a href="../">Skill Library</a> / <a href="../#cat-productivity">productivity</a></p>
+			<div class="row">
+				<h1>to-spec</h1>
+				<span class="pill typed">typed</span>
+				<a class="src" href="https://github.com/joaopinto15/skills/blob/main/productivity/skills/to-spec/SKILL.md" target="_blank" rel="noopener">view on GitHub ↗</a>
+			</div>
+			<p class="filepath">productivity/skills/to-spec/SKILL.md</p>
+		</header>
+
+		<div class="md">
+<div class="tablewrap"><table class="fm">
+<thead><tr><th>Field</th><th>Value</th></tr></thead>
+<tbody>
+<tr><th scope="row"><code>name</code></th><td>to-spec</td></tr>
+<tr><th scope="row"><code>description</code></th><td>Turn the current conversation into a spec and publish it to the project issue tracker. No interview, just synthesis of what you've already discussed.</td></tr>
+<tr><th scope="row"><code>disable-model-invocation</code></th><td>true</td></tr>
+</tbody>
+</table></div>
+<p>This skill takes the current conversation context and codebase understanding and produces a spec. Do NOT interview the user; just synthesize what you already know.</p>
+<p>The issue tracker and triage label vocabulary should have been provided to you. If not, tell the user to run <code>/setup-matt-pocock-skills</code>.</p>
+<h2>Process</h2>
+<ol>
+<li><p>Explore the repo to understand the current state of the codebase, if you haven&#39;t already. Use the project&#39;s domain glossary vocabulary throughout the spec, and respect any ADRs in the area you&#39;re touching.</p>
+</li>
+<li><p>Sketch out the seams at which you&#39;re going to test the feature. Existing seams should be preferred to new ones. Use the highest seam possible. If new seams are needed, propose them at the highest point you can. The fewer seams across the codebase, the better - the ideal number is one.</p>
+</li>
+</ol>
+<p>Check with the user that these seams match their expectations.</p>
+<ol start="3">
+<li>Write the spec using the template below, then publish it to the project issue tracker. Apply the <code>ready-for-agent</code> triage label - no need for additional triage.</li>
+</ol>
+<spec-template>
+
+<h2>Problem statement</h2>
+<p>The problem that the user is facing, from the user&#39;s perspective.</p>
+<h2>Solution</h2>
+<p>The solution to the problem, from the user&#39;s perspective.</p>
+<h2>User stories</h2>
+<p>A LONG, numbered list of user stories. Each user story should be in the format of:</p>
+<ol>
+<li>As an <actor>, I want a <feature>, so that <benefit></li>
+</ol>
+<user-story-example>
+1. As a mobile bank customer, I want to see balance on my accounts, so that I can make better informed decisions about my spending
+</user-story-example>
+
+<p>This list of user stories should be extremely extensive and cover all aspects of the feature.</p>
+<h2>Implementation decisions</h2>
+<p>A list of implementation decisions that were made. This can include:</p>
+<ul>
+<li>The modules that will be built/modified</li>
+<li>The interfaces of those modules that will be modified</li>
+<li>Technical clarifications from the developer</li>
+<li>Architectural decisions</li>
+<li>Schema changes</li>
+<li>API contracts</li>
+<li>Specific interactions</li>
+</ul>
+<p>Do NOT include specific file paths or code snippets. They may end up being outdated very quickly.</p>
+<p>Exception: if a prototype produced a snippet that encodes a decision more precisely than prose can (state machine, reducer, schema, type shape), inline it within the relevant decision and note briefly that it came from a prototype. Trim to the decision-rich parts, not a working demo, just the important bits.</p>
+<h2>Testing decisions</h2>
+<p>A list of testing decisions that were made. Include:</p>
+<ul>
+<li>A description of what makes a good test (only test external behavior, not implementation details)</li>
+<li>Which modules will be tested</li>
+<li>Prior art for the tests (i.e. similar types of tests in the codebase)</li>
+</ul>
+<h2>Out of scope</h2>
+<p>A description of the things that are out of scope for this spec.</p>
+<h2>Further notes</h2>
+<p>Any further notes about the feature.</p>
+</spec-template>
+
+		</div>
+
+		<footer>
+			<p>The whole file, frontmatter included, rendered at commit <code>3326283</code>. Edit it on <a href="https://github.com/joaopinto15/skills/blob/main/productivity/skills/to-spec/SKILL.md">GitHub</a> and this page rebuilds.</p>
+			<p><a href="../">← every skill</a></p>
+		</footer>
+	</article>
+
+</div>

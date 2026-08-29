@@ -1,0 +1,85 @@
+<title>domain-modeling · Skill Library</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Build and sharpen a project's domain model.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../style.css">
+
+<div class="wrap doc" style="--hue: var(--cat-1)">
+
+	<article>
+		<header class="skillhead">
+			<p class="crumb"><a href="../">Skill Library</a> / <a href="../#cat-coding">coding</a></p>
+			<div class="row">
+				<h1>domain-modeling</h1>
+				<span class="pill outline">agent</span>
+				<a class="src" href="https://github.com/joaopinto15/skills/blob/main/coding/skills/domain-modeling/SKILL.md" target="_blank" rel="noopener">view on GitHub ↗</a>
+			</div>
+			<p class="filepath">coding/skills/domain-modeling/SKILL.md</p>
+		</header>
+
+		<div class="md">
+<div class="tablewrap"><table class="fm">
+<thead><tr><th>Field</th><th>Value</th></tr></thead>
+<tbody>
+<tr><th scope="row"><code>name</code></th><td>domain-modeling</td></tr>
+<tr><th scope="row"><code>description</code></th><td>Build and sharpen a project's domain model. Use when discussing codebase terminology, writing or editing a CONTEXT.md, or recording or editing an ADR.</td></tr>
+</tbody>
+</table></div>
+<h1>Domain modeling</h1>
+<p>Actively build and sharpen the project&#39;s domain model as you design. This is the <em>active</em> discipline: challenging terms, inventing edge-case scenarios, and writing the glossary and decisions down the moment they crystallise. (Merely <em>reading</em> <code>CONTEXT.md</code> for vocabulary is not this skill: that&#39;s a one-line habit any skill can do. This skill is for when you&#39;re changing the model, not just consuming it.)</p>
+<h2>File structure</h2>
+<p>Most repos have a single context:</p>
+<pre><code>/
+├── CONTEXT.md
+├── docs/
+│   └── adr/
+│       ├── 0001-event-sourced-orders.md
+│       └── 0002-postgres-for-write-model.md
+└── src/
+</code></pre>
+<p>If a <code>CONTEXT-MAP.md</code> exists at the root, the repo has multiple contexts. The map points to where each one lives:</p>
+<pre><code>/
+├── CONTEXT-MAP.md
+├── docs/
+│   └── adr/                          ← system-wide decisions
+├── src/
+│   ├── ordering/
+│   │   ├── CONTEXT.md
+│   │   └── docs/adr/                 ← context-specific decisions
+│   └── billing/
+│       ├── CONTEXT.md
+│       └── docs/adr/
+</code></pre>
+<p>Create files lazily: only when you have something to write. If no <code>CONTEXT.md</code> exists, create one when the first term is resolved. If no <code>docs/adr/</code> exists, create it when the first ADR is needed.</p>
+<h2>During the session</h2>
+<h3>Challenge against the glossary</h3>
+<p>When the user uses a term that conflicts with the existing language in <code>CONTEXT.md</code>, call it out immediately. &quot;Your glossary defines &#39;cancellation&#39; as X, but you seem to mean Y. Which is it?&quot;</p>
+<h3>Sharpen fuzzy language</h3>
+<p>When the user uses vague or overloaded terms, propose a precise canonical term. &quot;You&#39;re saying &#39;account&#39;: do you mean the Customer or the User? Those are different things.&quot;</p>
+<h3>Discuss concrete scenarios</h3>
+<p>When domain relationships are being discussed, stress-test them with specific scenarios. Invent scenarios that probe edge cases and force the user to be precise about the boundaries between concepts.</p>
+<h3>Cross-reference with code</h3>
+<p>When the user states how something works, check whether the code agrees. If you find a contradiction, surface it: &quot;Your code cancels entire Orders, but you just said partial cancellation is possible. Which is right?&quot;</p>
+<h3>Update CONTEXT.md inline</h3>
+<p>When a term is resolved, update <code>CONTEXT.md</code> right there. Don&#39;t batch these up: capture them as they happen. Use the format in <a href="https://github.com/joaopinto15/skills/blob/main/coding/skills/domain-modeling/./CONTEXT-FORMAT.md">CONTEXT-FORMAT.md</a>.</p>
+<p><code>CONTEXT.md</code> should be totally devoid of implementation details. Do not treat <code>CONTEXT.md</code> as a spec, a scratch pad, or a repository for implementation decisions. It is a glossary and nothing else.</p>
+<h3>Offer ADRs sparingly</h3>
+<p>Only offer to create an ADR when all three are true:</p>
+<ol>
+<li><strong>Hard to reverse</strong>: the cost of changing your mind later is meaningful</li>
+<li><strong>Surprising without context</strong>: a future reader will wonder &quot;why did they do it this way?&quot;</li>
+<li><strong>The result of a real trade-off</strong>: there were genuine alternatives and you picked one for specific reasons</li>
+</ol>
+<p>If any of the three is missing, skip the ADR. Use the format in <a href="https://github.com/joaopinto15/skills/blob/main/coding/skills/domain-modeling/./ADR-FORMAT.md">ADR-FORMAT.md</a>.</p>
+
+		</div>
+
+		<footer>
+			<p>The whole file, frontmatter included, rendered at commit <code>3326283</code>. Edit it on <a href="https://github.com/joaopinto15/skills/blob/main/coding/skills/domain-modeling/SKILL.md">GitHub</a> and this page rebuilds.</p>
+			<p><a href="../">← every skill</a></p>
+		</footer>
+	</article>
+
+</div>

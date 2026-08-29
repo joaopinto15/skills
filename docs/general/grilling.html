@@ -1,0 +1,55 @@
+<title>grilling · Skill Library</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Grill the user relentlessly about a plan, decision, or idea.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../style.css">
+
+<div class="wrap doc" style="--hue: var(--cat-2)">
+
+	<article>
+		<header class="skillhead">
+			<p class="crumb"><a href="../">Skill Library</a> / <a href="../#cat-general">general</a></p>
+			<div class="row">
+				<h1>grilling</h1>
+				<span class="pill outline">agent</span>
+				<a class="src" href="https://github.com/joaopinto15/skills/blob/main/general/skills/grilling/SKILL.md" target="_blank" rel="noopener">view on GitHub ↗</a>
+			</div>
+			<p class="filepath">general/skills/grilling/SKILL.md</p>
+		</header>
+
+		<div class="md">
+<div class="tablewrap"><table class="fm">
+<thead><tr><th>Field</th><th>Value</th></tr></thead>
+<tbody>
+<tr><th scope="row"><code>name</code></th><td>grilling</td></tr>
+<tr><th scope="row"><code>description</code></th><td>Grill the user relentlessly about a plan, decision, or idea. Use when the user wants to stress-test their thinking, or uses any 'grill' trigger phrases.</td></tr>
+</tbody>
+</table></div>
+<p>Interview the user relentlessly until you reach a shared understanding. Map this as a <strong>design tree</strong>: every decision branches into the decisions that hang off it.</p>
+<p>Work the tree in <strong>rounds</strong>. The <strong>frontier</strong> is every decision whose prerequisites are already settled: the questions you can ask <em>now</em> without guessing at answers you haven&#39;t heard yet. Ask the whole frontier in one round: number each question and give your recommended answer. Then wait for the user&#39;s answers before the next round.</p>
+<p>Format a round like so:</p>
+<pre><code>❓ **Q1** - **&lt;question title&gt;**: &lt;question body, might be multiple paragraphs, including multiple choices&gt;
+
+➡️ &lt;your recommended answer&gt;
+
+---
+
+❓ **Q2** - **&lt;question title&gt;**: &lt;question body, might be multiple paragraphs, including multiple choices&gt;
+
+➡️ &lt;your recommended answer&gt;
+</code></pre>
+<p>Each round the user answers reshapes the tree: settled decisions push the frontier outward and unblock questions that depended on them. Recompute the frontier and ask the next round. A question whose answer depends on another question still open in this round belongs to a <em>later</em> round, not this one.</p>
+<p>Finding <em>facts</em> is your job, never the user&#39;s. When a frontier question needs a fact from the environment (filesystem, tools, etc.), dispatch a sub-agent to find it; don&#39;t ask the user for anything you could look up yourself. Don&#39;t block on it: a running exploration is an unsettled prerequisite, so only the questions downstream of it wait for the sub-agent to report; ask the rest of the frontier now. The <em>decisions</em> are the user&#39;s: put each to them and wait.</p>
+<p>The session is done when the frontier is empty: every branch of the design tree visited, nothing left silently assumed. Do not act on it until the user confirms you have reached a shared understanding.</p>
+
+		</div>
+
+		<footer>
+			<p>The whole file, frontmatter included, rendered at commit <code>3326283</code>. Edit it on <a href="https://github.com/joaopinto15/skills/blob/main/general/skills/grilling/SKILL.md">GitHub</a> and this page rebuilds.</p>
+			<p><a href="../">← every skill</a></p>
+		</footer>
+	</article>
+
+</div>

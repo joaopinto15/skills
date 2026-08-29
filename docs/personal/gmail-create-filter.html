@@ -1,0 +1,122 @@
+<title>gmail-create-filter · Skill Library</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Create Gmail filters with the `gws` CLI: rules that label, archive, star, or forward mail as it arrives.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../style.css">
+
+<div class="wrap doc" style="--hue: var(--cat-4)">
+
+	<article>
+		<header class="skillhead">
+			<p class="crumb"><a href="../">Skill Library</a> / <a href="../#cat-personal">personal</a></p>
+			<div class="row">
+				<h1>gmail-create-filter</h1>
+				<span class="pill outline">agent</span>
+				<a class="src" href="https://github.com/joaopinto15/skills/blob/main/personal/skills/gmail-create-filter/SKILL.md" target="_blank" rel="noopener">view on GitHub ↗</a>
+			</div>
+			<p class="filepath">personal/skills/gmail-create-filter/SKILL.md</p>
+		</header>
+
+		<div class="md">
+<div class="tablewrap"><table class="fm">
+<thead><tr><th>Field</th><th>Value</th></tr></thead>
+<tbody>
+<tr><th scope="row"><code>name</code></th><td>gmail-create-filter</td></tr>
+<tr><th scope="row"><code>description</code></th><td>Create Gmail filters with the `gws` CLI: rules that label, archive, star, or forward mail as it arrives. Use when the user wants future mail handled automatically, on phrasings like &quot;always label these&quot;, &quot;auto-archive that newsletter&quot;, &quot;keep this sender out of my inbox&quot;, &quot;set up a filter&quot;, &quot;star anything from my boss&quot;.</td></tr>
+<tr><th scope="row"><code>compatibility</code></th><td>Requires the `gws` CLI, authenticated with Gmail `settings.basic` and label modify scope.</td></tr>
+</tbody>
+</table></div>
+<h1>Create a Gmail filter</h1>
+<p>A filter is a criteria → action rule Gmail applies to <strong>incoming</strong> mail.
+Mail already in the mailbox stays put, so a filter answers half the
+request: pair it with a <a href="https://github.com/joaopinto15/skills/blob/main/personal/skills/gmail-create-filter/../gmail-triage/SKILL.md">gmail-triage</a> sweep to
+file the backlog the same way.</p>
+<h2>Commands</h2>
+<p><code>gws</code> prints a <code>Using keyring backend: keyring</code> line before the JSON body.</p>
+<pre><code>gws gmail users labels list             --params &#39;{&quot;userId&quot;:&quot;me&quot;}&#39; --format json
+gws gmail users labels create           --params &#39;{&quot;userId&quot;:&quot;me&quot;}&#39; --json &#39;{&quot;name&quot;:&quot;Receipts&quot;}&#39;
+gws gmail users settings filters list   --params &#39;{&quot;userId&quot;:&quot;me&quot;}&#39; --format json
+gws gmail users settings filters create --params &#39;{&quot;userId&quot;:&quot;me&quot;}&#39; --json &#39;&lt;filter&gt;&#39;
+gws gmail users settings filters delete --params &#39;{&quot;userId&quot;:&quot;me&quot;,&quot;id&quot;:&quot;&lt;filter_id&gt;&quot;}&#39;
+</code></pre>
+<h2>Filter shape</h2>
+<pre><code class="language-json">{&quot;criteria&quot;: {&quot;from&quot;: &quot;receipts@example.com&quot;},
+ &quot;action&quot;: {&quot;addLabelIds&quot;: [&quot;Label_5&quot;], &quot;removeLabelIds&quot;: [&quot;INBOX&quot;]}}
+</code></pre>
+<p><strong>criteria</strong>: <code>from</code>, <code>to</code>, <code>subject</code>, <code>query</code>, <code>negatedQuery</code>,
+<code>hasAttachment</code>, <code>excludeChats</code>, <code>size</code> + <code>sizeComparison</code>. <code>query</code> takes a
+full Gmail search string, such as <code>from:(a@x.com OR b@y.com) has:attachment</code>,
+so one filter covers a whole family of senders.</p>
+<p><strong>action</strong>: <code>addLabelIds</code>, <code>removeLabelIds</code>, <code>forward</code>. Labels are addressed
+by id (<code>Label_5</code>), never display name. Every Gmail-UI checkbox is one of
+these two lists:</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Intent</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Skip the inbox (archive)</td>
+<td><code>removeLabelIds: [&quot;INBOX&quot;]</code></td>
+</tr>
+<tr>
+<td>Star it</td>
+<td><code>addLabelIds: [&quot;STARRED&quot;]</code></td>
+</tr>
+<tr>
+<td>Mark as read</td>
+<td><code>removeLabelIds: [&quot;UNREAD&quot;]</code></td>
+</tr>
+<tr>
+<td>Always / never important</td>
+<td><code>addLabelIds</code> / <code>removeLabelIds: [&quot;IMPORTANT&quot;]</code></td>
+</tr>
+<tr>
+<td>Delete it</td>
+<td><code>addLabelIds: [&quot;TRASH&quot;]</code></td>
+</tr>
+<tr>
+<td>Never send to spam</td>
+<td><code>removeLabelIds: [&quot;SPAM&quot;]</code></td>
+</tr>
+</tbody></table>
+</div><p>A <code>forward</code> address has to be verified in Gmail&#39;s settings UI first; the API
+forwards to verified addresses only.</p>
+<h2>Workflow</h2>
+<ol>
+<li><code>labels list</code> builds the id↔name map. <code>labels create</code> makes the target
+label when it is missing.</li>
+<li><code>filters list</code> reads what already fires. Gmail runs every matching
+filter, so a near-duplicate stacks its actions on top of the old one.</li>
+<li>Restate the rule to the user in plain words. Which mail, which action.
+Create it once they confirm. A filter that archives or trashes acts
+on mail the user has not seen yet, which is the expensive kind of wrong.</li>
+<li><code>filters create</code>, then <code>filters list</code> to confirm the stored criteria
+match what was asked.</li>
+<li>Offer the <a href="https://github.com/joaopinto15/skills/blob/main/personal/skills/gmail-create-filter/../gmail-triage/SKILL.md">gmail-triage</a> sweep for the mail
+that arrived before the filter existed.</li>
+</ol>
+<p>Filters are immutable. There is no update verb. Editing one means delete
+plus create, so keep the old filter&#39;s JSON until the replacement is listed.</p>
+<h2>Example</h2>
+<p>&quot;label anything from Amazon as Orders and keep it out of my inbox&quot;</p>
+<pre><code>Label:  Orders (Label_12, created)
+Filter: AND_1234 created
+  criteria: from = auto-confirm@amazon.es OR no-reply@amazon.es
+  action:   +Orders, -INBOX  (skips the inbox)
+Applies to new mail only. 14 older Amazon threads still in the inbox.
+</code></pre>
+
+		</div>
+
+		<footer>
+			<p>The whole file, frontmatter included, rendered at commit <code>3326283</code>. Edit it on <a href="https://github.com/joaopinto15/skills/blob/main/personal/skills/gmail-create-filter/SKILL.md">GitHub</a> and this page rebuilds.</p>
+			<p><a href="../">← every skill</a></p>
+		</footer>
+	</article>
+
+</div>

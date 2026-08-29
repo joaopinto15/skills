@@ -15,7 +15,7 @@ A skill is a directory under `<category>/skills/` holding a `SKILL.md`. The YAML
 
 Each category README lists its skills. It marks which ones you invoke by typing `/<name>` and which ones the agent invokes on its own.
 
-[The visual catalogue](https://joaopinto15.github.io/skills/) shows every skill as a card, with the invocation flag on each one. It is generated from the `SKILL.md` frontmatter into `docs/index.html`, so it cannot drift from the skills. Build it locally with `node tools/build-catalog.mjs`. The `catalog` workflow rebuilds it whenever a `SKILL.md` changes.
+[The visual catalogue](https://joaopinto15.github.io/skills/) shows every skill as a card, with the invocation flag on each one. Each card opens a page holding that skill's whole `SKILL.md`, frontmatter included, rendered. The pages are generated from the files themselves, so they cannot drift from them. Build it locally with `node tools/build-catalog.mjs`. The `catalog` workflow rebuilds it whenever a `SKILL.md` changes.
 
 ## Setup
 

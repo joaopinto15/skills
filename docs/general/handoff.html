@@ -1,0 +1,46 @@
+<title>handoff · Skill Library</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Compact the current conversation into a handoff document for another agent to pick up.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../style.css">
+
+<div class="wrap doc" style="--hue: var(--cat-2)">
+
+	<article>
+		<header class="skillhead">
+			<p class="crumb"><a href="../">Skill Library</a> / <a href="../#cat-general">general</a></p>
+			<div class="row">
+				<h1>handoff</h1>
+				<span class="pill typed">typed</span>
+				<a class="src" href="https://github.com/joaopinto15/skills/blob/main/general/skills/handoff/SKILL.md" target="_blank" rel="noopener">view on GitHub ↗</a>
+			</div>
+			<p class="filepath">general/skills/handoff/SKILL.md</p>
+		</header>
+
+		<div class="md">
+<div class="tablewrap"><table class="fm">
+<thead><tr><th>Field</th><th>Value</th></tr></thead>
+<tbody>
+<tr><th scope="row"><code>name</code></th><td>handoff</td></tr>
+<tr><th scope="row"><code>description</code></th><td>Compact the current conversation into a handoff document for another agent to pick up.</td></tr>
+<tr><th scope="row"><code>argument-hint</code></th><td>What will the next session be used for?</td></tr>
+<tr><th scope="row"><code>disable-model-invocation</code></th><td>true</td></tr>
+</tbody>
+</table></div>
+<p>Write a handoff document summarising the current conversation so a fresh agent can continue the work. Save to the temporary directory of the user&#39;s OS - not the current workspace.</p>
+<p>Include a &quot;suggested skills&quot; section in the document, naming which skills the next agent should call the Skill tool for.</p>
+<p>Do not duplicate content already captured in other artifacts (specs, plans, ADRs, issues, commits, diffs). Reference them by path or URL instead.</p>
+<p>Redact any sensitive information, such as API keys, passwords, or personally identifiable information.</p>
+<p>If the user passed arguments, treat them as a description of what the next session will focus on and tailor the doc accordingly.</p>
+
+		</div>
+
+		<footer>
+			<p>The whole file, frontmatter included, rendered at commit <code>3326283</code>. Edit it on <a href="https://github.com/joaopinto15/skills/blob/main/general/skills/handoff/SKILL.md">GitHub</a> and this page rebuilds.</p>
+			<p><a href="../">← every skill</a></p>
+		</footer>
+	</article>
+
+</div>

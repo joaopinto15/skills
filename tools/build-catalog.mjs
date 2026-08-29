@@ -6,8 +6,13 @@
 // Run it with: node tools/build-catalog.mjs
 import { readdirSync, readFileSync, writeFileSync, mkdirSync, statSync } from "node:fs";
 import { execSync } from "node:child_process";
+import { createRequire } from "node:module";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+
+// ponytail: marked is vendored, not an npm dependency. The catalog workflow runs
+// `node tools/build-catalog.mjs` with no install step, and this keeps it that way.
+const { marked } = createRequire(import.meta.url)("./vendor/marked.min.js");
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const ORDER = ["coding", "general", "productivity", "personal"];
@@ -67,6 +72,11 @@ function collect() {
 					typed: fm?.["disable-model-invocation"] === "true",
 					loadable: Boolean(fm?.name && fm?.description),
 					bytes: text.length,
+					page: `${cat}/${d.name}.html`,
+					// The whole file, split the way it is written: the header is a table of
+					// fields, everything after it is markdown.
+					fields: fm || {},
+					body: text.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, ""),
 				};
 			})
 			.sort((a, b) => a.dir.localeCompare(b.dir));
@@ -106,7 +116,7 @@ const card = (s) => {
 		: s.bytes === 0
 			? "The folder is there. The file has nothing in it yet."
 			: "No frontmatter, so this file does not load as a skill.";
-	return `			<a class="card" href="${BLOB}/${esc(s.path)}/SKILL.md" target="_blank" rel="noopener">
+	return `			<a class="card" href="./${esc(s.page)}">
 				<div class="cardtop"><span class="cardname">${esc(s.name)}${ARROW}</span>${pill}</div>
 				<p class="cardtext">${text}</p>
 				<span class="cardpath">${esc(s.path)}</span>
@@ -152,15 +162,7 @@ const keys = cats
 	)
 	.join("\n");
 
-const html = `<title>Skill Library</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Every skill in ${esc(REPO)}, generated from the SKILL.md files.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
-
-<style>
-	/* Neutrals: shadcn, the same tokens as the portfolio.
+const CSS = `	/* Neutrals: shadcn, the same tokens as the portfolio.
 	   Category hues: checked with the palette validator, all pairs, both themes. */
 	:root {
 		--background: oklch(1 0 0);
@@ -409,11 +411,62 @@ const html = `<title>Skill Library</title>
 	footer p { margin: 0; font-size: 13px; color: var(--muted-foreground); }
 	footer a { color: var(--foreground); text-decoration: underline; text-underline-offset: 4px; }
 
+	/* a skill page: the SKILL.md itself */
+	.md { font-size: 15.5px; }
+	.md > :first-child { margin-top: 0; }
+	.md h1, .md h2, .md h3, .md h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.25; margin: 1.5em 0 0.5em; }
+	.md h1 { font-size: 24px; }
+	.md h2 { font-size: 19px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+	.md h3 { font-size: 16px; }
+	.md h4 { font-size: 14.5px; }
+	.md p, .md ul, .md ol, .md blockquote, .md pre { margin: 0 0 1em; }
+	.md .tablewrap table { margin: 0; }
+	.md ul, .md ol { padding-left: 1.4em; }
+	.md li { margin: 0.25em 0; }
+	.md a { color: var(--foreground); text-underline-offset: 3px; }
+	.md code { font-family: var(--mono); font-size: 0.85em; background: var(--muted); border: 1px solid var(--border); border-radius: 5px; padding: 1px 5px; }
+	.md pre { background: var(--muted); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; overflow-x: auto; }
+	.md pre code { background: none; border: 0; padding: 0; font-size: 13px; }
+	.md blockquote { border-left: 3px solid var(--border); padding-left: 14px; color: var(--muted-foreground); }
+	.tablewrap { overflow-x: auto; margin: 0 0 1em; }
+	.md table { border-collapse: collapse; width: 100%; font-size: 14px; }
+	.md th, .md td { border: 1px solid var(--border); padding: 6px 12px; text-align: left; }
+	.md th { background: var(--muted); font-weight: 600; }
+	.md table.fm { font-family: var(--mono); font-size: 13px; }
+	.md table.fm th[scope="row"] { white-space: nowrap; width: 1%; font-weight: 500; }
+	.md table.fm th[scope="row"] code { background: none; border: 0; padding: 0; }
+	.md table.fm td { color: var(--muted-foreground); }
+	.md hr { border: 0; border-top: 1px solid var(--border); margin: 2em 0; }
+	.md img { max-width: 100%; }
+
 	@media (prefers-reduced-motion: reduce) {
 		.card, .arrow { transition: none; }
 		.card:hover .arrow { transform: none; }
 	}
-</style>
+	/* skill page chrome */
+	.crumb { font-family: var(--mono); font-size: 12.5px; color: var(--muted-foreground); margin: 0; }
+	.crumb a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--border); }
+	.crumb a:hover { color: var(--foreground); }
+	.skillhead { display: flex; flex-direction: column; gap: 14px; }
+	.skillhead .row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+	.skillhead h1 { font-family: var(--mono); font-size: clamp(24px, 4vw, 34px); }
+	.skillhead .src { font-size: 13px; color: var(--muted-foreground); text-decoration: none; margin-left: auto; }
+	.skillhead .src:hover { color: var(--foreground); }
+	.filepath { font-family: var(--mono); font-size: 12px; color: var(--muted-foreground); word-break: break-all; }
+	article { display: flex; flex-direction: column; gap: 24px; }
+
+	.wrap.doc { max-width: 880px; gap: 32px; }
+`;
+
+const HEAD = (title, desc, css) => `<title>${esc(title)}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="${esc(desc)}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="${css}">`;
+
+const html = `${HEAD("Skill Library", `Every skill in ${REPO}, generated from the SKILL.md files.`, "./style.css")}
 
 <div class="wrap">
 
@@ -511,8 +564,74 @@ ${cats.map(section).join("\n\n")}
 	</footer>
 
 </div>
+
+`;
+
+const frontmatterTable = (fields) => {
+	const rows = Object.entries(fields);
+	if (!rows.length) return "";
+	return `<div class="tablewrap"><table class="fm">
+<thead><tr><th>Field</th><th>Value</th></tr></thead>
+<tbody>
+${rows.map(([k, v]) => `<tr><th scope="row"><code>${esc(k)}</code></th><td>${esc(v)}</td></tr>`).join("\n")}
+</tbody>
+</table></div>`;
+};
+
+// A SKILL.md links to its neighbours by relative path (tests.md, reporting.md).
+// Those files are not published here, so send those links to the repo instead.
+function render(s) {
+	const walk = new marked.Renderer();
+	const table = walk.table.bind(walk);
+	walk.table = (token) => `<div class="tablewrap">${table(token)}</div>`;
+	const link = walk.link.bind(walk);
+	walk.link = (token) => {
+		if (!/^([a-z]+:|\/\/|#)/i.test(token.href)) token.href = `${BLOB}/${s.path}/${token.href}`;
+		return link(token);
+	};
+	return marked.parse(s.body, { gfm: true, renderer: walk });
+}
+
+const skillPage = (cat, s, hue) => `${HEAD(`${s.name} · Skill Library`, s.summary || `${s.path}/SKILL.md`, "../style.css")}
+
+<div class="wrap doc" style="--hue: ${hue}">
+
+	<article>
+		<header class="skillhead">
+			<p class="crumb"><a href="../">Skill Library</a> / <a href="../#cat-${esc(cat)}">${esc(cat)}</a></p>
+			<div class="row">
+				<h1>${esc(s.name)}</h1>
+				${
+					s.loadable
+						? s.typed
+							? '<span class="pill typed">typed</span>'
+							: '<span class="pill outline">agent</span>'
+						: '<span class="pill stub">empty</span>'
+				}
+				<a class="src" href="${BLOB}/${esc(s.path)}/SKILL.md" target="_blank" rel="noopener">view on GitHub ↗</a>
+			</div>
+			<p class="filepath">${esc(s.path)}/SKILL.md</p>
+		</header>
+
+		<div class="md">
+${frontmatterTable(s.fields)}
+${s.body.trim() ? render(s) : "<p>The folder is there. The file has nothing in it yet.</p>"}
+		</div>
+
+		<footer>
+			<p>The whole file, frontmatter included, rendered at commit <code>${esc(commitSha())}</code>. Edit it on <a href="${BLOB}/${esc(s.path)}/SKILL.md">GitHub</a> and this page rebuilds.</p>
+			<p><a href="../">← every skill</a></p>
+		</footer>
+	</article>
+
+</div>
 `;
 
 mkdirSync(join(ROOT, "docs"), { recursive: true });
+writeFileSync(join(ROOT, "docs", "style.css"), CSS.trimStart() + "\n");
 writeFileSync(join(ROOT, "docs", "index.html"), html);
-console.log(`docs/index.html: ${total} skills, ${typed} typed, ${loadable - typed} model-invocable, ${broken.length} not loadable`);
+for (const { cat, skills, hue } of cats) {
+	mkdirSync(join(ROOT, "docs", cat), { recursive: true });
+	for (const s of skills) writeFileSync(join(ROOT, "docs", s.page), skillPage(cat, s, hue));
+}
+console.log(`docs/index.html + ${total} skill pages: ${total} skills, ${typed} typed, ${loadable - typed} model-invocable, ${broken.length} not loadable`);
