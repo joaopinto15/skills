@@ -11,27 +11,27 @@
 	<header class="masthead">
 		<p class="eyebrow"><a href="https://github.com/joaopinto15/skills">github.com/joaopinto15/skills</a></p>
 		<h1>Skill Library</h1>
-		<p class="lede">30 skill folders in 4 categories. Each one holds a <code>SKILL.md</code>: frontmatter naming the skill, a description that decides when it fires, and the instructions the agent follows. This page is generated from those files, so it cannot drift from them. Every card links to the file it describes.</p>
+		<p class="lede">31 skill folders in 4 categories. Each one holds a <code>SKILL.md</code>: frontmatter naming the skill, a description that decides when it fires, and the instructions the agent follows. This page is generated from those files, so it cannot drift from them. Every card links to the file it describes.</p>
 
 		<div class="barwrap">
-			<div class="bar" role="img" aria-label="coding 11, general 7, productivity 10, personal 2, of 30 skills">
-				<span class="seg" style="--hue: var(--cat-1); flex-grow: 11" title="coding: 11 of 30 skills"></span>
-				<span class="seg" style="--hue: var(--cat-2); flex-grow: 7" title="general: 7 of 30 skills"></span>
-				<span class="seg" style="--hue: var(--cat-3); flex-grow: 10" title="productivity: 10 of 30 skills"></span>
-				<span class="seg" style="--hue: var(--cat-4); flex-grow: 2" title="personal: 2 of 30 skills"></span>
+			<div class="bar" role="img" aria-label="coding 11, general 7, productivity 10, personal 3, of 31 skills">
+				<span class="seg" style="--hue: var(--cat-1); flex-grow: 11" title="coding: 11 of 31 skills"></span>
+				<span class="seg" style="--hue: var(--cat-2); flex-grow: 7" title="general: 7 of 31 skills"></span>
+				<span class="seg" style="--hue: var(--cat-3); flex-grow: 10" title="productivity: 10 of 31 skills"></span>
+				<span class="seg" style="--hue: var(--cat-4); flex-grow: 3" title="personal: 3 of 31 skills"></span>
 			</div>
 			<nav class="keys">
 				<a class="key" href="#cat-coding" style="--hue: var(--cat-1)"><span class="dot"></span>coding <b>11</b></a>
 				<a class="key" href="#cat-general" style="--hue: var(--cat-2)"><span class="dot"></span>general <b>7</b></a>
 				<a class="key" href="#cat-productivity" style="--hue: var(--cat-3)"><span class="dot"></span>productivity <b>10</b></a>
-				<a class="key" href="#cat-personal" style="--hue: var(--cat-4)"><span class="dot"></span>personal <b>2</b></a>
+				<a class="key" href="#cat-personal" style="--hue: var(--cat-4)"><span class="dot"></span>personal <b>3</b></a>
 			</nav>
 		</div>
 
 		<div class="stats">
-			<div class="stat"><b>30</b><span>skill folders</span></div>
+			<div class="stat"><b>31</b><span>skill folders</span></div>
 			<div class="stat"><b>15</b><span>you type</span></div>
-			<div class="stat"><b>15</b><span>agent picks</span></div>
+			<div class="stat"><b>16</b><span>agent picks</span></div>
 			<div class="stat"><b>4</b><span>categories</span></div>
 		</div>
 
@@ -79,11 +79,11 @@
 
 				<rect class="dgm-box" rx="8" x="700" y="46" width="206" height="56"></rect>
 				<text class="dgm-name" x="716" y="70">you type /name</text>
-				<text class="dgm-sub" x="716" y="89">all 30 loadable skills</text>
+				<text class="dgm-sub" x="716" y="89">all 31 loadable skills</text>
 
 				<rect class="dgm-box" rx="8" x="700" y="198" width="206" height="56"></rect>
 				<text class="dgm-name" x="716" y="222">agent picks it</text>
-				<text class="dgm-sub" x="716" y="241">the 15 without the flag</text>
+				<text class="dgm-sub" x="716" y="241">the 16 without the flag</text>
 
 				<text class="dgm-edge" x="222" y="112">local clone</text>
 				<text class="dgm-edge" x="222" y="192">marketplace</text>
@@ -273,7 +273,7 @@
 		<div class="cathead">
 			<span class="dot"></span>
 			<h2>personal</h2>
-			<span class="count">2 skills, 0 typed</span>
+			<span class="count">3 skills, 0 typed</span>
 			<code class="install">/plugin install personal@skills</code>
 		</div>
 		<div class="grid">
@@ -287,11 +287,16 @@
 				<p class="cardtext">Triage Gmail with the `gws` CLI: classify inbox threads into labels, create labels on demand, and bulk-file the results of a mailbox-wide search.</p>
 				<span class="cardpath">personal/skills/gmail-triage</span>
 			</a>
+			<a class="card" href="./personal/herdr.html">
+				<div class="cardtop"><span class="cardname">herdr<svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span><span class="pill outline">agent</span></div>
+				<p class="cardtext">Control Herdr, a terminal multiplexer for coding agents. Use only when the user explicitly mentions Herdr or asks to use Herdr to inspect or control panes, tabs, workspaces, commands, or another agent.</p>
+				<span class="cardpath">personal/skills/herdr</span>
+			</a>
 		</div>
 	</section>
 
 	<footer>
-		<p>Generated by <a href="https://github.com/joaopinto15/skills/blob/main/tools/build-catalog.mjs">tools/build-catalog.mjs</a> from the <code>SKILL.md</code> frontmatter at commit <code>ab6549b</code>. Each card shows the opening of the skill's description, with the trigger phrases trimmed off.</p>
+		<p>Generated by <a href="https://github.com/joaopinto15/skills/blob/main/tools/build-catalog.mjs">tools/build-catalog.mjs</a> from the <code>SKILL.md</code> frontmatter at commit <code>69eaa59</code>. Each card shows the opening of the skill's description, with the trigger phrases trimmed off.</p>
 		<p>Edit a skill, push, and the <a href="https://github.com/joaopinto15/skills/blob/main/.github/workflows/catalog.yml">catalog workflow</a> rebuilds this page.</p>
 	</footer>
 

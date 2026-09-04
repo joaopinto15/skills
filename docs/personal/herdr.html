@@ -1,0 +1,157 @@
+<title>herdr · Skill Library</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Control Herdr, a terminal multiplexer for coding agents. Use only when the user explicitly mentions Herdr or asks to use Herdr to inspect or control panes, tabs, workspaces, commands, or another agent.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../style.css">
+
+<div class="wrap doc" style="--hue: var(--cat-4)">
+
+	<article>
+		<header class="skillhead">
+			<p class="crumb"><a href="../">Skill Library</a> / <a href="../#cat-personal">personal</a></p>
+			<div class="row">
+				<h1>herdr</h1>
+				<span class="pill outline">agent</span>
+				<a class="src" href="https://github.com/joaopinto15/skills/blob/main/personal/skills/herdr/SKILL.md" target="_blank" rel="noopener">view on GitHub ↗</a>
+			</div>
+			<p class="filepath">personal/skills/herdr/SKILL.md</p>
+		</header>
+
+		<div class="md">
+<div class="tablewrap"><table class="fm">
+<thead><tr><th>Field</th><th>Value</th></tr></thead>
+<tbody>
+<tr><th scope="row"><code>name</code></th><td>herdr</td></tr>
+<tr><th scope="row"><code>description</code></th><td>Control Herdr, a terminal multiplexer for coding agents. Use only when the user explicitly mentions Herdr or asks to use Herdr to inspect or control panes, tabs, workspaces, commands, or another agent. Do not use merely because a task could benefit from a background terminal, delegation, or parallel work. Requires HERDR_ENV=1.</td></tr>
+</tbody>
+</table></div>
+<h1>Herdr</h1>
+<p>Herdr organizes terminals into workspaces, tabs, and panes, recognizes coding agents running inside panes, and exposes the current session through the <code>herdr</code> CLI.</p>
+<p>Before issuing any control command, verify that this agent is running inside a Herdr-managed pane:</p>
+<pre><code class="language-bash">test &quot;${HERDR_ENV:-}&quot; = 1
+</code></pre>
+<p>If the check fails, say that you are not running inside Herdr and stop. Do not inspect or control the focused Herdr session from outside Herdr.</p>
+<p>When the check passes, the <code>herdr</code> binary in <code>PATH</code> talks to the current session. Use it to inspect neighboring work, create terminal layout, start agents and commands, read output, and wait for state changes.</p>
+<h2>Learn the current CLI</h2>
+<p>The installed binary is the authority for command syntax. Start with:</p>
+<pre><code class="language-bash">herdr --help
+</code></pre>
+<p>Then print the relevant command group by running the group without a subcommand:</p>
+<pre><code class="language-bash">herdr agent
+herdr pane
+herdr workspace
+herdr tab
+herdr worktree
+herdr terminal
+herdr notification
+herdr integration
+herdr session
+</code></pre>
+<p>Do not run bare <code>herdr</code> for discovery; it launches or attaches the TUI. Do not probe a mutating nested command by omitting arguments. Commands such as <code>herdr workspace create</code> are valid with defaults and will execute.</p>
+<p>Most control commands return JSON. Read identifiers and state from those responses instead of predicting them.</p>
+<h2>Understand layout, panes, and agents</h2>
+<p>Choose the primitive that matches the job:</p>
+<ul>
+<li>Workspace, tab, and pane topology organize terminal locations.</li>
+<li>Pane commands control raw terminals, shells, tests, servers, input, and output.</li>
+<li>Agent commands control the recognized coding agent currently occupying a pane.</li>
+</ul>
+<p>A pane exists whether or not it contains an agent. <code>agent start</code> requires an existing available shell pane and never creates, splits, or moves layout. Use pane commands for ordinary processes. Use agent commands when Herdr must validate agent identity or interpret <code>idle</code>, <code>working</code>, <code>blocked</code>, <code>done</code>, and <code>unknown</code> lifecycle states.</p>
+<p>Agent commands accept either a unique live agent name or the pane ID currently hosting that agent. They do not accept terminal IDs or bare agent-kind labels. Names must match <code>[a-z][a-z0-9_-]{0,31}</code> and be unique among live agents. A name follows the current pane occupant and is cleared when that agent exits, is released, or is replaced.</p>
+<p><code>idle</code> means the agent is ready for input and its tab has been seen in the focused Herdr UI. <code>done</code> is the same underlying idle state after unseen background work finishes. Focusing the tab or targeting the pane or agent with a focus command marks it seen. CLI reads do not mark it seen. <code>blocked</code> means Herdr recognized an approval or question UI. <code>unknown</code> means an agent is present but Herdr cannot classify it confidently; it does not prove completion.</p>
+<h2>Use IDs and caller context</h2>
+<p>Public IDs are opaque stable handles:</p>
+<ul>
+<li>workspace: <code>w1</code></li>
+<li>tab: <code>w1:t1</code></li>
+<li>pane: <code>w1:p1</code></li>
+</ul>
+<p>Closed tab and pane IDs are not reused. A pane moved into another workspace receives a new workspace-qualified pane ID. After <code>pane move</code>, continue with <code>.result.move_result.pane.pane_id</code> or the live agent name. The old value is reported as <code>.result.move_result.previous_pane_id</code>; only the moved process&#39;s inherited caller context keeps resolving that old ID, so do not use it as a general agent target.</p>
+<p>Herdr injects the caller&#39;s context into each managed pane:</p>
+<pre><code class="language-bash">printf &#39;%s\n&#39; &quot;$HERDR_WORKSPACE_ID&quot; &quot;$HERDR_TAB_ID&quot; &quot;$HERDR_PANE_ID&quot;
+</code></pre>
+<p>Prefer <code>--current</code> when a pane command should target the calling pane. Omitting a target may use the UI-focused pane, which can belong to the user or another client.</p>
+<p>Discover live state with:</p>
+<pre><code class="language-bash">herdr workspace list
+herdr tab list --workspace &quot;$HERDR_WORKSPACE_ID&quot;
+herdr pane current --current
+herdr pane list --workspace &quot;$HERDR_WORKSPACE_ID&quot;
+herdr agent list
+</code></pre>
+<p>Creation responses expose the IDs to use next. <code>workspace create</code> returns <code>.result.workspace</code>, <code>.result.tab</code>, and <code>.result.root_pane</code>. <code>tab create</code> returns <code>.result.tab</code> and <code>.result.root_pane</code>. <code>pane split</code> returns the new pane as <code>.result.pane</code>.</p>
+<h2>Start and coordinate an agent</h2>
+<p>Default to a sibling pane in the current tab and the current working directory. Do not create a workspace, tab, worktree, or different cwd unless the user explicitly requests that topology or location.</p>
+<p>Honor a direction requested by the user. Otherwise inspect the caller pane:</p>
+<pre><code class="language-bash">herdr pane layout --pane &quot;$HERDR_PANE_ID&quot;
+</code></pre>
+<p>Split a wide pane to the right and a narrow or tall pane down. Avoid repeated same-direction splits that create unusably narrow columns or short rows. Keep the user&#39;s focus in the calling pane and explicitly preserve the caller&#39;s working directory:</p>
+<pre><code class="language-bash">herdr pane split --current --direction right --cwd &quot;$PWD&quot; --no-focus
+</code></pre>
+<p>Replace <code>right</code> with <code>down</code> when appropriate. Read the new pane ID from <code>.result.pane.pane_id</code>.</p>
+<p>An available shell pane must be at its interactive prompt, with the shell itself in the foreground and no foreground command, editor, or agent running. Start a supported agent in that pane with a useful unique name:</p>
+<pre><code class="language-bash">herdr agent start reviewer --kind codex --pane &lt;returned-pane-id&gt;
+</code></pre>
+<p>Use the kind requested by the user. Run <code>herdr agent</code> to inspect the installed kind list and options. Pass native agent arguments only after <code>--</code>:</p>
+<pre><code class="language-bash">herdr agent start reviewer --kind codex --pane &lt;returned-pane-id&gt; -- &lt;agent-args...&gt;
+</code></pre>
+<p>A successful <code>agent start</code> returns only after Herdr detects the expected agent in the same pane and considers it ready for interactive input. If the agent is blocked during startup, the command returns <code>agent_not_ready</code> immediately but keeps the name available for <code>agent read</code> and <code>agent send-keys</code>. Wait until the agent becomes idle before prompting it. Startup defaults to a 30-second timeout.</p>
+<p>Submit work through the agent surface:</p>
+<pre><code class="language-bash">herdr agent prompt reviewer &quot;Review the current diff and report only actionable findings.&quot; --wait --timeout 120000
+</code></pre>
+<p><code>agent prompt</code> honors the pane&#39;s live bracketed-paste mode and sends text followed by encoded Enter after a short delay. It rejects an agent already waiting at an approval or question dialog with <code>agent_blocked</code> before sending any input. Inspect the blocked UI and ask the user before answering it. For normal agent work, <code>--wait</code> is enough: it waits for the first settled <code>idle</code>, <code>done</code>, or <code>blocked</code> state. Do not repeat those defaults with <code>--until</code>.</p>
+<p>A prompt sent from a non-working state must produce an observed lifecycle change within five seconds. Otherwise Herdr returns <code>agent_prompt_stalled</code> instead of waiting indefinitely. This wait tracks lifecycle state, not an individual turn; if the agent is already working, completion of the active turn may satisfy it.</p>
+<p>Use <code>--until</code> only for a state-specific workflow, such as waiting for an already-running agent to request input:</p>
+<pre><code class="language-bash">herdr agent wait reviewer --until blocked --timeout 120000
+</code></pre>
+<p>Without <code>--until</code>, standalone <code>agent wait</code> uses the same settled-state defaults as <code>agent prompt --wait</code>.</p>
+<p>Use logical keys for interactive agent UI controls:</p>
+<pre><code class="language-bash">herdr agent send-keys reviewer esc
+herdr agent send-keys reviewer ctrl+c
+</code></pre>
+<p>Herdr validates all keys before writing any bytes. Read the result through the resolved agent:</p>
+<pre><code class="language-bash">herdr agent get reviewer
+herdr agent read reviewer --source recent-unwrapped --lines 120
+</code></pre>
+<p>If a wait fails or returns <code>blocked</code>, inspect <code>agent get</code> and <code>agent read</code> before deciding what input to send. Use the pane surface only when raw terminal control is intentional.</p>
+<h2>Run an ordinary command in another pane</h2>
+<p>Create a sibling pane with the same geometry rule, preserve the caller&#39;s working directory, and keep user focus unchanged:</p>
+<pre><code class="language-bash">herdr pane split --current --direction right --cwd &quot;$PWD&quot; --no-focus
+</code></pre>
+<p>Read the new pane ID from <code>.result.pane.pane_id</code>, then run and inspect the command:</p>
+<pre><code class="language-bash">herdr pane run &lt;returned-pane-id&gt; &quot;just test&quot;
+herdr pane wait-output &lt;returned-pane-id&gt; --match &quot;test result&quot; --timeout 120000
+herdr pane read &lt;returned-pane-id&gt; --source recent-unwrapped --lines 120
+</code></pre>
+<p><code>pane run</code> atomically sends command text and Enter. <code>pane wait-output</code> searches the selected snapshot immediately, so output that already exists can match. Use <code>--match &lt;text&gt;</code> for a literal substring or <code>--regex &lt;pattern&gt;</code> for a Rust regular expression. Omitting <code>--timeout</code> allows an indefinite wait.</p>
+<p>Use the read source that matches the task:</p>
+<ul>
+<li><code>visible</code>: the currently rendered viewport.</li>
+<li><code>recent</code>: recent rendered output, including soft wraps.</li>
+<li><code>recent-unwrapped</code>: recent output with soft wraps joined; prefer it for logs and transcripts.</li>
+<li><code>detection</code>: the plain-text bottom-buffer snapshot used for agent detection.</li>
+</ul>
+<p>Use <code>--format ansi</code> when colors and terminal styling are evidence. Otherwise use text.</p>
+<p><code>--lines</code> asks Herdr for more rows from the pane&#39;s available screen and host scrollback. If increasing it does not reveal more of a completed response, the pane is probably running the agent on the terminal&#39;s alternate screen. Rows that leave the alternate screen do not enter Herdr&#39;s host scrollback, so a larger line count cannot recover them.</p>
+<p>After that failed read, ask the agent to write its complete response as Markdown in a temporary directory and reply only with the file path, then read the file directly. Use this only as a fallback; do not request file output in the initial prompt.</p>
+<h2>Safety and coordination rules</h2>
+<ul>
+<li>Use <code>--no-focus</code> for background work unless the user asked to switch context.</li>
+<li>Use <code>--current</code>, an explicit pane ID, or a unique agent name. Do not rely on another client&#39;s focused pane.</li>
+<li>Parse IDs from JSON responses. Do not derive them from sidebar order or examples.</li>
+<li>Do not close workspaces, tabs, panes, or sessions you did not create unless the user explicitly asked.</li>
+<li>Never run <code>herdr server stop</code> from an active session unless the user explicitly intends to stop the server and its pane processes.</li>
+<li>Never kill the main Herdr process. Use named test sessions for experiments that need an isolated server.</li>
+<li>CLI server errors are JSON on stderr with exit status 1. CLI syntax errors exit with status 2.</li>
+</ul>
+
+		</div>
+
+		<footer>
+			<p>The whole file, frontmatter included, rendered at commit <code>69eaa59</code>. Edit it on <a href="https://github.com/joaopinto15/skills/blob/main/personal/skills/herdr/SKILL.md">GitHub</a> and this page rebuilds.</p>
+			<p><a href="../">← every skill</a></p>
+		</footer>
+	</article>
+
+</div>
